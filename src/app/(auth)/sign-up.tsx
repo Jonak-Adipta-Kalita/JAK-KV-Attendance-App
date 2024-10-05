@@ -4,6 +4,7 @@ import { useSignUp } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
 
 // TODO: Only allow Admin Account to create Users
+// TODO: Fix Auth issues - Username instead of Email
 
 export default () => {
   const { isLoaded, signUp, setActive } = useSignUp();
