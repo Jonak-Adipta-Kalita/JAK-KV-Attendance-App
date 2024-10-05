@@ -3,7 +3,7 @@ import { TextInput, Button, View } from "react-native";
 import { useSignUp } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
 
-export default function SignUpScreen() {
+export default () => {
   const { isLoaded, signUp, setActive } = useSignUp();
   const router = useRouter();
 
@@ -87,4 +87,4 @@ export default function SignUpScreen() {
       )}
     </View>
   );
-}
+};

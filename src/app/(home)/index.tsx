@@ -2,7 +2,7 @@ import { SignedIn, SignedOut, useUser } from "@clerk/clerk-expo";
 import { Link } from "expo-router";
 import { Text, View } from "react-native";
 
-export default function HomeScreen() {
+export default () => {
   const { user } = useUser();
 
   return (
@@ -20,4 +20,4 @@ export default function HomeScreen() {
       </SignedOut>
     </View>
   );
-}
+};

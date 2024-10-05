@@ -42,7 +42,7 @@ if (!publishableKey) {
 
 SplashScreen.preventAutoHideAsync();
 
-export default function RootLayout() {
+export default () => {
   useEffect(() => {
     SplashScreen.hideAsync();
   }, []);
@@ -56,4 +56,4 @@ export default function RootLayout() {
       </ClerkLoaded>
     </ClerkProvider>
   );
-}
+};

@@ -1,5 +1,5 @@
 import { Stack } from "expo-router/stack";
 
-export default function HomeLayout() {
+export default () => {
   return <Stack />;
-}
+};

@@ -3,7 +3,7 @@ import { Link, useRouter } from "expo-router";
 import { Text, TextInput, Button, View } from "react-native";
 import React from "react";
 
-export default function SignInScreen() {
+export default () => {
   const { signIn, setActive, isLoaded } = useSignIn();
   const router = useRouter();
 
@@ -57,4 +57,4 @@ export default function SignInScreen() {
       </View>
     </View>
   );
-}
+};
