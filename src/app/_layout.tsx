@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { LogBox } from "react-native";
 import { Slot } from "expo-router";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
@@ -8,6 +9,10 @@ import * as SecureStore from "expo-secure-store";
 import "react-native-reanimated";
 import "../globals.css";
 import { ClerkLoaded, ClerkProvider } from "@clerk/clerk-expo";
+
+LogBox.ignoreLogs([
+  "Clerk has been loaded with development keys. Development instances have strict usage limits and should not be used when deploying your application to production",
+]);
 
 const tokenCache = {
   async getToken(key: string) {
