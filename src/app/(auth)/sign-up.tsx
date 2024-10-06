@@ -22,8 +22,8 @@ export default () => {
         username,
         password,
       });
-      router.replace("/");
       await setActive({ session: process.createdSessionId });
+      router.replace("/");
     } catch (err: any) {
       console.error(JSON.stringify(err, null, 2));
     }
