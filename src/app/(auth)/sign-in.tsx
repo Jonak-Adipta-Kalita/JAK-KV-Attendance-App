@@ -1,25 +1,23 @@
+import React, { useCallback, useState } from "react";
 import { useSignIn } from "@clerk/clerk-expo";
 import { Link, useRouter } from "expo-router";
 import { Text, TextInput, Button, View } from "react-native";
-import React from "react";
-
-// TODO: Only allow Admin Account to create Users
 
 export default () => {
   const { signIn, setActive, isLoaded } = useSignIn();
   const router = useRouter();
 
-  const [emailAddress, setEmailAddress] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
-  const onSignInPress = React.useCallback(async () => {
+  const onSignInPress = useCallback(async () => {
     if (!isLoaded) {
       return;
     }
 
     try {
       const signInAttempt = await signIn.create({
-        identifier: emailAddress,
+        identifier: username,
         password,
       });
 
@@ -34,15 +32,15 @@ export default () => {
     } catch (err: any) {
       console.error(JSON.stringify(err, null, 2));
     }
-  }, [isLoaded, emailAddress, password]);
+  }, [isLoaded, username, password]);
 
   return (
     <View>
       <TextInput
         autoCapitalize="none"
-        value={emailAddress}
-        placeholder="Email..."
-        onChangeText={(emailAddress) => setEmailAddress(emailAddress)}
+        value={username}
+        placeholder="Username..."
+        onChangeText={(emailAddress) => setUsername(emailAddress)}
       />
       <TextInput
         value={password}
