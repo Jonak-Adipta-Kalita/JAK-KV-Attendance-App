@@ -1,7 +1,13 @@
 import React, { useCallback, useState } from "react";
 import { useSignIn } from "@clerk/clerk-expo";
 import { Link, useRouter } from "expo-router";
-import { Text, TextInput, Button, View } from "react-native";
+import {
+  Text,
+  TextInput,
+  Button,
+  View,
+  KeyboardAvoidingView,
+} from "react-native";
 
 export default () => {
   const { signIn, setActive, isLoaded } = useSignIn();
@@ -33,7 +39,7 @@ export default () => {
   }, [isLoaded, username, password]);
 
   return (
-    <View>
+    <KeyboardAvoidingView>
       <TextInput
         autoCapitalize="none"
         value={username}
@@ -53,6 +59,6 @@ export default () => {
           <Text>Sign up</Text>
         </Link>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
