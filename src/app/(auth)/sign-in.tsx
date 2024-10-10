@@ -39,30 +39,36 @@ export default () => {
   }, [isLoaded, username, password]);
 
   return (
-    <KeyboardAvoidingView className="bg-background flex items-center h-full gap-y-10 mt-10">
-      <Text className="text-4xl text-secondary">Sign In</Text>
-      {/* <View className="">
-        <TextInput
-          autoCapitalize="none"
-          value={username}
-          placeholder="Username"
-          onChangeText={(emailAddress) => setUsername(emailAddress)}
-          className="input"
-        />
-        <TextInput
-          value={password}
-          placeholder="Password"
-          secureTextEntry={true}
-          onChangeText={(password) => setPassword(password)}
-          className="input"
-        />
-        <TouchableOpacity
-          onPress={onSignInPress}
-          // className="rounded-lg p-5 shadow-md bg-primary"
-        >
-          <Text className="">Sign In</Text>
-        </TouchableOpacity>
-      </View> */}
+    <KeyboardAvoidingView className="bg-background flex items-center h-full">
+      <View className="gap-y-10 mt-14">
+        <Text className="text-4xl text-primary font-bold tracking-[0.12rem]">
+          Sign In
+        </Text>
+        <View className="flex items-center justify-center">
+          <TextInput
+            autoCapitalize="none"
+            value={username}
+            placeholder="Username"
+            onChangeText={(emailAddress) => setUsername(emailAddress)}
+            className="input"
+          />
+          <TextInput
+            value={password}
+            placeholder="Password"
+            secureTextEntry={true}
+            onChangeText={(password) => setPassword(password)}
+            className="input"
+          />
+          {/* <TouchableOpacity
+            // onPress={onSignInPress}
+            className="rounded-lg p-3 shadow-md bg-primary"
+          >
+            <Text className="text-secondary text-xl font-semibold tracking-wider">
+              Sign In
+            </Text>
+          </TouchableOpacity> */}
+        </View>
+      </View>
     </KeyboardAvoidingView>
   );
 };
