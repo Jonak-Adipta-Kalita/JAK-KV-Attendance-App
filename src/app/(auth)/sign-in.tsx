@@ -1,7 +1,13 @@
 import React, { useCallback, useState } from "react";
 import { useSignIn } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
-import { TextInput, Button, KeyboardAvoidingView } from "react-native";
+import {
+  TextInput,
+  KeyboardAvoidingView,
+  TouchableOpacity,
+  Text,
+  View,
+} from "react-native";
 
 export default () => {
   const { signIn, setActive, isLoaded } = useSignIn();
@@ -33,20 +39,30 @@ export default () => {
   }, [isLoaded, username, password]);
 
   return (
-    <KeyboardAvoidingView>
-      <TextInput
-        autoCapitalize="none"
-        value={username}
-        placeholder="Username..."
-        onChangeText={(emailAddress) => setUsername(emailAddress)}
-      />
-      <TextInput
-        value={password}
-        placeholder="Password..."
-        secureTextEntry={true}
-        onChangeText={(password) => setPassword(password)}
-      />
-      <Button title="Sign In" onPress={onSignInPress} />
+    <KeyboardAvoidingView className="bg-background">
+      <View className="">
+        <Text className="">Sign In</Text>
+        <TextInput
+          autoCapitalize="none"
+          value={username}
+          placeholder="Username..."
+          onChangeText={(emailAddress) => setUsername(emailAddress)}
+          className="input"
+        />
+        <TextInput
+          value={password}
+          placeholder="Password..."
+          secureTextEntry={true}
+          onChangeText={(password) => setPassword(password)}
+          className="input"
+        />
+        <TouchableOpacity
+          onPress={onSignInPress}
+          className="rounded-lg p-5 shadow-md bg-primary"
+        >
+          <Text className="">Sign In</Text>
+        </TouchableOpacity>
+      </View>
     </KeyboardAvoidingView>
   );
 };

@@ -10,3 +10,9 @@
     --color-accent: #ecdfcc;
   }
 }
+
+@layer components {
+  .input {
+    @apply text-primary;
+  }
+}
