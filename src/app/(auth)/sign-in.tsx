@@ -63,7 +63,8 @@ export default () => {
           />
           <TouchableOpacity
             onPress={onSignInPress}
-            className="box-style bg-primary mt-7"
+            disabled={!isLoaded || !username || !password}
+            className="box-style bg-primary mt-7 disabled:opacity-50"
           >
             <Text className="text-secondary text-center text-xl font-semibold tracking-wider">
               Sign In
