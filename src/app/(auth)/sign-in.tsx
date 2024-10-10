@@ -52,15 +52,14 @@ export default () => {
             placeholder="Username"
             onChangeText={(emailAddress) => setUsername(emailAddress)}
             className="box-style"
-            placeholderClassName="text-primary"
           />
           <TextInput
+            autoCapitalize="none"
+            secureTextEntry={true}
             value={password}
             placeholder="Password"
-            secureTextEntry={true}
             onChangeText={(password) => setPassword(password)}
             className="box-style"
-            placeholderClassName="text-primary"
           />
           <TouchableOpacity
             onPress={onSignInPress}

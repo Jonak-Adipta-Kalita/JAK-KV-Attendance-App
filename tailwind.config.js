@@ -12,6 +12,10 @@ module.exports = {
         primary: "var(--color-text-primary)",
         secondary: "var(--color-text-secondary)",
       },
+      placeholderColor: {
+        primary: "var(--color-text-primary)",
+        secondary: "var(--color-text-secondary)",
+      },
     },
   },
   plugins: [],
