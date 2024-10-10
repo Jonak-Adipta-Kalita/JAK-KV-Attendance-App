@@ -1,13 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { useSignIn } from "@clerk/clerk-expo";
-import { Link, useRouter } from "expo-router";
-import {
-  Text,
-  TextInput,
-  Button,
-  View,
-  KeyboardAvoidingView,
-} from "react-native";
+import { useRouter } from "expo-router";
+import { TextInput, Button, View, KeyboardAvoidingView } from "react-native";
 
 export default () => {
   const { signIn, setActive, isLoaded } = useSignIn();
@@ -53,12 +47,6 @@ export default () => {
         onChangeText={(password) => setPassword(password)}
       />
       <Button title="Sign In" onPress={onSignInPress} />
-      <View>
-        <Text>Don't have an account?</Text>
-        <Link href="/sign-up">
-          <Text>Sign up</Text>
-        </Link>
-      </View>
     </KeyboardAvoidingView>
   );
 };
