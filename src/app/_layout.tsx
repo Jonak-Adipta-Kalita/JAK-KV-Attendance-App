@@ -11,6 +11,7 @@ import * as SecureStore from "expo-secure-store";
 
 import "react-native-reanimated";
 import "../globals.css";
+import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
 
 cssInterop(SafeAreaView, { className: "style" });
 
@@ -56,6 +57,7 @@ export default () => {
       <ClerkLoaded>
         <GestureHandlerRootView>
           <Slot />
+          <ExpoStatusBar style="light" />
         </GestureHandlerRootView>
       </ClerkLoaded>
     </ClerkProvider>
