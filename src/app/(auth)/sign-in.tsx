@@ -1,7 +1,13 @@
 import React, { useCallback, useState } from "react";
 import { useSignIn } from "@clerk/clerk-expo";
-import { Link, useRouter } from "expo-router";
-import { Text, TextInput, Button, View } from "react-native";
+import { useRouter } from "expo-router";
+import {
+  TextInput,
+  KeyboardAvoidingView,
+  TouchableOpacity,
+  Text,
+  View,
+} from "react-native";
 
 export default () => {
   const { signIn, setActive, isLoaded } = useSignIn();
@@ -33,26 +39,39 @@ export default () => {
   }, [isLoaded, username, password]);
 
   return (
-    <View>
-      <TextInput
-        autoCapitalize="none"
-        value={username}
-        placeholder="Username..."
-        onChangeText={(emailAddress) => setUsername(emailAddress)}
-      />
-      <TextInput
-        value={password}
-        placeholder="Password..."
-        secureTextEntry={true}
-        onChangeText={(password) => setPassword(password)}
-      />
-      <Button title="Sign In" onPress={onSignInPress} />
-      <View>
-        <Text>Don't have an account?</Text>
-        <Link href="/sign-up">
-          <Text>Sign up</Text>
-        </Link>
+    <KeyboardAvoidingView className="bg-background h-full">
+      <View className="gap-y-20 mt-14 flex items-center">
+        <Text className="text-4xl text-primary font-bold tracking-wider">
+          Sign In
+        </Text>
+        <View className="flex items-center justify-center gap-y-7">
+          <TextInput
+            autoCapitalize="none"
+            autoFocus
+            value={username}
+            placeholder="Username"
+            onChangeText={(emailAddress) => setUsername(emailAddress)}
+            className="box-style"
+          />
+          <TextInput
+            autoCapitalize="none"
+            secureTextEntry={true}
+            value={password}
+            placeholder="Password"
+            onChangeText={(password) => setPassword(password)}
+            className="box-style"
+          />
+          <TouchableOpacity
+            onPress={onSignInPress}
+            disabled={!isLoaded || !username || !password}
+            className="box-style bg-primary mt-7 disabled:opacity-50"
+          >
+            <Text className="text-secondary text-center text-xl font-semibold tracking-wider">
+              Sign In
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
