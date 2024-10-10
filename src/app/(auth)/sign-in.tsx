@@ -39,30 +39,30 @@ export default () => {
   }, [isLoaded, username, password]);
 
   return (
-    <KeyboardAvoidingView className="bg-background">
-      <View className="">
-        <Text className="">Sign In</Text>
+    <KeyboardAvoidingView className="bg-background flex items-center h-full gap-y-10 mt-10">
+      <Text className="text-4xl text-secondary">Sign In</Text>
+      {/* <View className="">
         <TextInput
           autoCapitalize="none"
           value={username}
-          placeholder="Username..."
+          placeholder="Username"
           onChangeText={(emailAddress) => setUsername(emailAddress)}
           className="input"
         />
         <TextInput
           value={password}
-          placeholder="Password..."
+          placeholder="Password"
           secureTextEntry={true}
           onChangeText={(password) => setPassword(password)}
           className="input"
         />
         <TouchableOpacity
           onPress={onSignInPress}
-          className="rounded-lg p-5 shadow-md bg-primary"
+          // className="rounded-lg p-5 shadow-md bg-primary"
         >
           <Text className="">Sign In</Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
     </KeyboardAvoidingView>
   );
 };

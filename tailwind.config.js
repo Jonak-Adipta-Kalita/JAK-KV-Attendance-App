@@ -9,6 +9,10 @@ module.exports = {
         secondary: "var(--color-secondary)",
         accent: "var(--color-accent)",
       },
+      textColor: {
+        primary: "var(--color-text-primary)",
+        secondary: "var(--color-text-secondary)",
+      },
     },
   },
   plugins: [],

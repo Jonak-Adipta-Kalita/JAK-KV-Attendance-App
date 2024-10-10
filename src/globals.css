@@ -8,6 +8,9 @@
     --color-primary: #da8359;
     --color-secondary: #a5b68d;
     --color-accent: #ecdfcc;
+
+    --color-text-primary: #333;
+    --color-text-secondary: #404040;
   }
 }
 
