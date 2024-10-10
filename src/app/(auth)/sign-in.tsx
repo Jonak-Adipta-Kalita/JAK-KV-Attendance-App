@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { useSignIn } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
-import { TextInput, Button, View, KeyboardAvoidingView } from "react-native";
+import { TextInput, Button, KeyboardAvoidingView } from "react-native";
 
 export default () => {
   const { signIn, setActive, isLoaded } = useSignIn();
