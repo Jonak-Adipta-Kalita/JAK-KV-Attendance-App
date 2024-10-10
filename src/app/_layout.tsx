@@ -1,14 +1,18 @@
 import { useEffect } from "react";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { LogBox } from "react-native";
 import { Slot } from "expo-router";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { cssInterop } from "nativewind";
+import { ClerkLoaded, ClerkProvider } from "@clerk/clerk-expo";
 
 import * as SplashScreen from "expo-splash-screen";
 import * as SecureStore from "expo-secure-store";
 
 import "react-native-reanimated";
 import "../globals.css";
-import { ClerkLoaded, ClerkProvider } from "@clerk/clerk-expo";
+
+cssInterop(SafeAreaView, { className: "style" });
 
 LogBox.ignoreLogs([
   "Clerk has been loaded with development keys. Development instances have strict usage limits and should not be used when deploying your application to production",

@@ -8,7 +8,7 @@ export default () => {
   if (isSignedIn) return <Redirect href="/(home)" />;
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView className="flex-1 bg-background">
       <Stack screenOptions={{ headerShown: false }} />
     </SafeAreaView>
   );
