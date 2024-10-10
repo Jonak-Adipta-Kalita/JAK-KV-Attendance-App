@@ -41,7 +41,7 @@ export default () => {
   return (
     <KeyboardAvoidingView className="bg-background h-full">
       <View className="gap-y-20 mt-14 flex items-center">
-        <Text className="text-4xl text-primary font-bold tracking-[0.12rem]">
+        <Text className="text-4xl text-primary font-bold tracking-wider">
           Sign In
         </Text>
         <View className="flex items-center justify-center gap-y-7">
@@ -52,6 +52,7 @@ export default () => {
             placeholder="Username"
             onChangeText={(emailAddress) => setUsername(emailAddress)}
             className="box-style"
+            placeholderClassName="text-primary"
           />
           <TextInput
             value={password}
@@ -59,12 +60,13 @@ export default () => {
             secureTextEntry={true}
             onChangeText={(password) => setPassword(password)}
             className="box-style"
+            placeholderClassName="text-primary"
           />
           <TouchableOpacity
             onPress={onSignInPress}
-            className="box-style bg-primary "
+            className="box-style bg-primary mt-7"
           >
-            <Text className="text-secondary text-xl font-semibold tracking-wider">
+            <Text className="text-secondary text-center text-xl font-semibold tracking-wider">
               Sign In
             </Text>
           </TouchableOpacity>

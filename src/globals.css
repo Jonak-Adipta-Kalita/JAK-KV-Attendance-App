@@ -15,6 +15,6 @@
 
 @layer components {
   .box-style {
-    @apply bg-secondary text-secondary rounded-xl text-xl p-4 min-h-[40px];
+    @apply bg-secondary text-secondary rounded-xl text-xl p-4 w-[23rem];
   }
 }
