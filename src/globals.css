@@ -14,7 +14,7 @@
 }
 
 @layer components {
-  .input {
-    @apply text-primary;
+  .box-style {
+    @apply bg-secondary text-secondary rounded-xl text-xl p-4 min-h-[40px];
   }
 }

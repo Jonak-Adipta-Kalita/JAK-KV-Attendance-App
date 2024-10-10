@@ -39,34 +39,35 @@ export default () => {
   }, [isLoaded, username, password]);
 
   return (
-    <KeyboardAvoidingView className="bg-background flex items-center h-full">
-      <View className="gap-y-10 mt-14">
+    <KeyboardAvoidingView className="bg-background h-full">
+      <View className="gap-y-20 mt-14 flex items-center">
         <Text className="text-4xl text-primary font-bold tracking-[0.12rem]">
           Sign In
         </Text>
-        <View className="flex items-center justify-center">
+        <View className="flex items-center justify-center gap-y-7">
           <TextInput
             autoCapitalize="none"
+            autoFocus
             value={username}
             placeholder="Username"
             onChangeText={(emailAddress) => setUsername(emailAddress)}
-            className="input"
+            className="box-style"
           />
           <TextInput
             value={password}
             placeholder="Password"
             secureTextEntry={true}
             onChangeText={(password) => setPassword(password)}
-            className="input"
+            className="box-style"
           />
-          {/* <TouchableOpacity
-            // onPress={onSignInPress}
-            className="rounded-lg p-3 shadow-md bg-primary"
+          <TouchableOpacity
+            onPress={onSignInPress}
+            className="box-style bg-primary "
           >
             <Text className="text-secondary text-xl font-semibold tracking-wider">
               Sign In
             </Text>
-          </TouchableOpacity> */}
+          </TouchableOpacity>
         </View>
       </View>
     </KeyboardAvoidingView>
