@@ -57,7 +57,7 @@ export default () => {
       <ClerkLoaded>
         <GestureHandlerRootView>
           <Slot />
-          <ExpoStatusBar style="light" />
+          <ExpoStatusBar style="dark" />
         </GestureHandlerRootView>
       </ClerkLoaded>
     </ClerkProvider>
