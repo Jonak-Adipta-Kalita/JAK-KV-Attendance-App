@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useSignIn } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
 import {
@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   Text,
   View,
+  Keyboard,
+  Animated,
 } from "react-native";
 
 export default () => {
@@ -15,6 +17,8 @@ export default () => {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const fadeOpacity = useRef(new Animated.Value(1));
 
   const onSignInPress = useCallback(async () => {
     if (!isLoaded) {
@@ -37,6 +41,31 @@ export default () => {
       console.error(JSON.stringify(err, null, 2));
     }
   }, [isLoaded, username, password]);
+
+  useEffect(() => {
+    const keyboardDidShow = Keyboard.addListener("keyboardDidShow", () => {
+      Animated.timing(fadeOpacity.current, {
+        toValue: 0,
+        duration: 700,
+        useNativeDriver: true,
+      }).start();
+    });
+
+    const keyboardDidHide = Keyboard.addListener("keyboardDidHide", () => {
+      Animated.timing(fadeOpacity.current, {
+        toValue: 1,
+        duration: 700,
+        useNativeDriver: true,
+      }).start();
+    });
+
+    return () => {
+      keyboardDidShow.remove();
+      keyboardDidHide.remove();
+
+      fadeOpacity.current.removeAllListeners();
+    };
+  }, []);
 
   return (
     <View className="bg-background h-full flex items-center">
@@ -72,16 +101,18 @@ export default () => {
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
-      {/* TODO: Hide the Credits when keyboard is active. */}
-      <View className="flex items-center absolute bottom-10 gap-y-2">
-        <Text className="text-primary text-sm font-semibold">
+      <Animated.View
+        className="flex items-center absolute bottom-10 gap-y-2"
+        style={{ opacity: fadeOpacity.current }}
+      >
+        <Text className="text-primary/50 text-sm font-semibold">
           Designed and Built by
         </Text>
         <Text className="text-primary text-sm font-semibold">
-          <Text className="font-bold">Jonak Adipta Kalita</Text> @ 2024 - Grade
-          11th
+          <Text className="font-bold">Jonak Adipta Kalita</Text> @ 2024 - 11th
+          Science
         </Text>
-      </View>
+      </Animated.View>
     </View>
   );
 };
