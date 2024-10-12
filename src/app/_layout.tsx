@@ -65,7 +65,6 @@ const App = () => {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Slot />
-      <ExpoStatusBar style="dark" />
     </GestureHandlerRootView>
   );
 };
@@ -74,6 +73,7 @@ export default () => {
   return (
     <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
       <App />
+      <ExpoStatusBar style="dark" />
     </ClerkProvider>
   );
 };
