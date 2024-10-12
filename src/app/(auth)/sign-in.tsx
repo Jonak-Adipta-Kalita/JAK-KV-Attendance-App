@@ -9,9 +9,11 @@ import {
   View,
   Keyboard,
   Animated,
-  ActivityIndicator,
 } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
+
+const AnimatedTouchableOpacity =
+  Animated.createAnimatedComponent(TouchableOpacity);
 
 export default () => {
   const { signIn, setActive, isLoaded } = useSignIn();
@@ -20,49 +22,79 @@ export default () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const [signingIn, setSigningIn] = useState(false);
   const [viewPassword, setViewPassword] = useState(false);
 
-  const fadeOpacity = useRef(new Animated.Value(1));
+  const creditsFadeOpacity = useRef(new Animated.Value(1));
+  const signingInOpacity = useRef(new Animated.Value(1));
+
+  const pulseSignInBtn = (action: "start" | "stop") => {
+    if (action === "start") {
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(signingInOpacity.current, {
+            toValue: 0.7,
+            duration: 500,
+            useNativeDriver: true,
+          }),
+          Animated.timing(signingInOpacity.current, {
+            toValue: 1,
+            duration: 500,
+            useNativeDriver: true,
+          }),
+        ])
+      ).start();
+    } else {
+      Animated.timing(signingInOpacity.current, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true,
+      }).start((finished) => {
+        if (finished) {
+          signingInOpacity.current.stopAnimation();
+        }
+      });
+    }
+  };
 
   const onSignInPress = useCallback(async () => {
     if (!isLoaded) {
       return;
     }
 
+    pulseSignInBtn("start");
     try {
-      setSigningIn(true);
       const signInAttempt = await signIn.create({
         identifier: username,
         password,
       });
-
       if (signInAttempt.status === "complete") {
         await setActive({ session: signInAttempt.createdSessionId });
         router.replace("/");
       } else {
         console.error(JSON.stringify(signInAttempt, null, 2));
       }
-      setSigningIn(false);
     } catch (err: any) {
       console.error(JSON.stringify(err, null, 2));
-      setSigningIn(false);
+    } finally {
+      await pulseSignInBtn("stop");
     }
   }, [isLoaded, username, password]);
 
+  const disabledButton = !isLoaded || !username || !password;
+
   useEffect(() => {
     const keyboardDidShow = Keyboard.addListener("keyboardDidShow", () => {
-      Animated.timing(fadeOpacity.current, {
+      Animated.timing(creditsFadeOpacity.current, {
         toValue: 0,
-        duration: 700,
+        duration: 1000,
         useNativeDriver: true,
       }).start();
     });
 
     const keyboardDidHide = Keyboard.addListener("keyboardDidHide", () => {
-      Animated.timing(fadeOpacity.current, {
+      Animated.timing(creditsFadeOpacity.current, {
         toValue: 1,
-        duration: 700,
+        duration: 1000,
         useNativeDriver: true,
       }).start();
     });
@@ -70,8 +102,6 @@ export default () => {
     return () => {
       keyboardDidShow.remove();
       keyboardDidHide.remove();
-
-      fadeOpacity.current.removeAllListeners();
     };
   }, []);
 
@@ -112,23 +142,24 @@ export default () => {
               )}
             </TouchableOpacity>
           </View>
-          {/* Fading Effect when signingin */}
-          <TouchableOpacity
+          <AnimatedTouchableOpacity
             onPress={onSignInPress}
-            disabled={!isLoaded || !username || !password}
-            className="box-style bg-primary mt-7 disabled:opacity-50"
-            // style={{ opacity: signingIn ? 0.5 : 1 }}
-            // activeOpacity={0.5}
+            disabled={disabledButton}
+            className="box-style bg-primary mt-7"
+            style={{
+              opacity: disabledButton ? 0.5 : signingInOpacity.current,
+            }}
+            activeOpacity={0.3}
           >
             <Text className="text-secondary text-center text-xl font-semibold tracking-wider">
               Sign In
             </Text>
-          </TouchableOpacity>
+          </AnimatedTouchableOpacity>
         </View>
       </View>
       <Animated.View
         className="flex items-center absolute bottom-10 gap-y-2"
-        style={{ opacity: fadeOpacity.current }}
+        style={{ opacity: creditsFadeOpacity.current }}
       >
         <Text className="text-primary/50 text-sm font-semibold">
           Designed and Built by
