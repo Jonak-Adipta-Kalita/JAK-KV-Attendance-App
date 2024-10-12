@@ -1,10 +1,10 @@
-import { useEffect } from "react";
+import { ReactNode, useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { LogBox } from "react-native";
+import { LogBox, View } from "react-native";
 import { Slot } from "expo-router";
 import { cssInterop } from "nativewind";
-import { ClerkLoaded, ClerkProvider } from "@clerk/clerk-expo";
+import { ClerkLoaded, ClerkProvider, useAuth } from "@clerk/clerk-expo";
 
 import * as SplashScreen from "expo-splash-screen";
 import * as SecureStore from "expo-secure-store";
@@ -47,19 +47,33 @@ if (!publishableKey) {
 
 SplashScreen.preventAutoHideAsync();
 
-export default () => {
+const App = () => {
+  const { isLoaded } = useAuth();
+
   useEffect(() => {
-    SplashScreen.hideAsync();
-  }, []);
+    const manageSplashScreen = async () => {
+      await SplashScreen.preventAutoHideAsync();
+
+      if (isLoaded) {
+        await SplashScreen.hideAsync();
+      }
+    };
+
+    manageSplashScreen();
+  }, [isLoaded]);
 
   return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Slot />
+      <ExpoStatusBar style="dark" />
+    </GestureHandlerRootView>
+  );
+};
+
+export default () => {
+  return (
     <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
-      <ClerkLoaded>
-        <GestureHandlerRootView>
-          <Slot />
-          <ExpoStatusBar style="dark" />
-        </GestureHandlerRootView>
-      </ClerkLoaded>
+      <App />
     </ClerkProvider>
   );
 };
