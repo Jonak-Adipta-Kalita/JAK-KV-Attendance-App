@@ -39,9 +39,9 @@ export default () => {
   }, [isLoaded, username, password]);
 
   return (
-    <KeyboardAvoidingView className="bg-background h-full">
-      <View className="gap-y-20 mt-14 flex items-center">
-        <Text className="text-4xl text-primary font-bold tracking-wider">
+    <View className="bg-background h-full flex items-center">
+      <KeyboardAvoidingView className="gap-y-20 mt-10 flex items-center">
+        <Text className="text-4xl text-primary font-semibold tracking-wider">
           Sign In
         </Text>
         <View className="flex items-center justify-center gap-y-7">
@@ -71,7 +71,17 @@ export default () => {
             </Text>
           </TouchableOpacity>
         </View>
+      </KeyboardAvoidingView>
+      {/* TODO: Hide the Credits when keyboard is active. */}
+      <View className="flex items-center absolute bottom-10 gap-y-2">
+        <Text className="text-primary text-sm font-semibold">
+          Designed and Built by
+        </Text>
+        <Text className="text-primary text-sm font-semibold">
+          <Text className="font-bold">Jonak Adipta Kalita</Text> @ 2024 - Grade
+          11th
+        </Text>
       </View>
-    </KeyboardAvoidingView>
+    </View>
   );
 };
