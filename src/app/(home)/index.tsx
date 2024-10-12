@@ -1,12 +1,9 @@
-import { SignedIn, SignedOut, useUser, useAuth } from "@clerk/clerk-expo";
-import { Link, Redirect } from "expo-router";
+import { SignedIn, useUser, useAuth } from "@clerk/clerk-expo";
 import { Button, Text, View } from "react-native";
 
 export default () => {
   const { user } = useUser();
-  const { signOut, isSignedIn } = useAuth();
-
-  if (!isSignedIn) return <Redirect href="/(auth)/sign-in" />;
+  const { signOut } = useAuth();
 
   return (
     <View>
