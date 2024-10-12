@@ -68,8 +68,8 @@ export default () => {
   }, []);
 
   return (
-    <View className="bg-background h-full flex items-center">
-      <KeyboardAvoidingView className="gap-y-20 mt-10 flex items-center">
+    <KeyboardAvoidingView className="bg-background h-full flex items-center">
+      <View className="gap-y-20 mt-10 flex items-center">
         <Text className="text-4xl text-primary font-semibold tracking-wider">
           Sign In
         </Text>
@@ -100,7 +100,7 @@ export default () => {
             </Text>
           </TouchableOpacity>
         </View>
-      </KeyboardAvoidingView>
+      </View>
       <Animated.View
         className="flex items-center absolute bottom-10 gap-y-2"
         style={{ opacity: fadeOpacity.current }}
@@ -113,6 +113,6 @@ export default () => {
           Science
         </Text>
       </Animated.View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
