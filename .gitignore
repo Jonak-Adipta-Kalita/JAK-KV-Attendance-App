@@ -18,4 +18,6 @@ web-build/
 
 expo-env.d.ts
 *.env*
+
+metadata.json
 # @end expo-cli

@@ -8,11 +8,11 @@ export default () => {
   const { signOut } = useAuth();
 
   return (
-    <View>
-      <SignedIn>
+    <SignedIn>
+      <View className="">
         <Text>Hello {user?.username}</Text>
         <Button title="Sign Out" onPress={async () => await signOut()} />
-      </SignedIn>
-    </View>
+      </View>
+    </SignedIn>
   );
 };
