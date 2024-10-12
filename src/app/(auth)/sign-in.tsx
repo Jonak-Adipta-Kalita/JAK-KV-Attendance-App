@@ -9,7 +9,9 @@ import {
   View,
   Keyboard,
   Animated,
+  ActivityIndicator,
 } from "react-native";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 export default () => {
   const { signIn, setActive, isLoaded } = useSignIn();
@@ -17,6 +19,9 @@ export default () => {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const [signingIn, setSigningIn] = useState(false);
+  const [viewPassword, setViewPassword] = useState(false);
 
   const fadeOpacity = useRef(new Animated.Value(1));
 
@@ -26,6 +31,7 @@ export default () => {
     }
 
     try {
+      setSigningIn(true);
       const signInAttempt = await signIn.create({
         identifier: username,
         password,
@@ -37,8 +43,10 @@ export default () => {
       } else {
         console.error(JSON.stringify(signInAttempt, null, 2));
       }
+      setSigningIn(false);
     } catch (err: any) {
       console.error(JSON.stringify(err, null, 2));
+      setSigningIn(false);
     }
   }, [isLoaded, username, password]);
 
@@ -82,18 +90,35 @@ export default () => {
             onChangeText={(emailAddress) => setUsername(emailAddress)}
             className="box-style"
           />
-          <TextInput
-            autoCapitalize="none"
-            secureTextEntry={true}
-            value={password}
-            placeholder="Password"
-            onChangeText={(password) => setPassword(password)}
-            className="box-style"
-          />
+          <View className="flex flex-row items-center justify-center relative">
+            <TextInput
+              autoCapitalize="none"
+              autoComplete={"password"}
+              secureTextEntry={!viewPassword ? true : false}
+              value={password}
+              placeholder="Password"
+              onChangeText={(password) => setPassword(password)}
+              className="box-style"
+            />
+            <TouchableOpacity
+              onPress={() => setViewPassword(!viewPassword)}
+              className="absolute right-7"
+              activeOpacity={0.55}
+            >
+              {!viewPassword ? (
+                <FontAwesome5 name="eye" size={22} color="#6B6B6B" />
+              ) : (
+                <FontAwesome5 name="eye-slash" size={20} color="#6B6B6B" />
+              )}
+            </TouchableOpacity>
+          </View>
+          {/* Fading Effect when signingin */}
           <TouchableOpacity
             onPress={onSignInPress}
             disabled={!isLoaded || !username || !password}
             className="box-style bg-primary mt-7 disabled:opacity-50"
+            // style={{ opacity: signingIn ? 0.5 : 1 }}
+            // activeOpacity={0.5}
           >
             <Text className="text-secondary text-center text-xl font-semibold tracking-wider">
               Sign In
