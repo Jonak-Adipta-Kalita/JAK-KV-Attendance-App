@@ -45,22 +45,14 @@ if (!publishableKey) {
   );
 }
 
-SplashScreen.preventAutoHideAsync();
-
 const App = () => {
-  // TODO: Hide SplashScreen when Clerk is loading.
+  // TODO: Show SplashScreen when Clerk is loading.
   const { isLoaded } = useAuth();
 
   useEffect(() => {
-    const manageSplashScreen = async () => {
-      await SplashScreen.preventAutoHideAsync();
-
-      if (isLoaded) {
-        await SplashScreen.hideAsync();
-      }
-    };
-
-    manageSplashScreen();
+    if (isLoaded) {
+      SplashScreen.hideAsync();
+    }
   }, [isLoaded]);
 
   return (
@@ -73,6 +65,10 @@ const App = () => {
 };
 
 export default () => {
+  useEffect(() => {
+    SplashScreen.preventAutoHideAsync();
+  }, []);
+
   return (
     <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
       <App />
