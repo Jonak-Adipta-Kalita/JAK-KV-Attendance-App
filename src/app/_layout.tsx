@@ -10,7 +10,7 @@ import * as SplashScreen from "expo-splash-screen";
 import * as SecureStore from "expo-secure-store";
 
 import "react-native-reanimated";
-import "../globals.css";
+import "@/globals.css";
 import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
 
 cssInterop(SafeAreaView, { className: "style" });

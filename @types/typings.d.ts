@@ -4,6 +4,10 @@ export interface TokenCache {
   clearToken?: (key: string) => void;
 }
 
+export interface TeachersData {
+  class_teachers: ClassTeacherData[];
+}
+
 export interface ClassTeacherData {
   id: string;
   standard: string;
@@ -14,5 +18,5 @@ export interface ClassTeacherData {
 export interface StudentData {
   name: string;
   rollNo: number;
-  attendance: "present" | "absent" | "leave";
+  attendance?: "present" | "absent" | "leave";
 }
