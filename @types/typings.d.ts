@@ -18,5 +18,5 @@ export interface ClassTeacherData {
 export interface StudentData {
   name: string;
   rollNo: number;
-  attendance?: "present" | "absent" | "leave";
+  attendance: "present" | "absent" | "leave";
 }

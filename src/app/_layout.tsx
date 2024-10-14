@@ -1,7 +1,7 @@
-import { ReactNode, useEffect } from "react";
+import { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { LogBox, View } from "react-native";
+import { LogBox } from "react-native";
 import { Slot } from "expo-router";
 import { cssInterop } from "nativewind";
 import { ClerkLoaded, ClerkProvider, useAuth } from "@clerk/clerk-expo";
@@ -10,7 +10,7 @@ import * as SplashScreen from "expo-splash-screen";
 import * as SecureStore from "expo-secure-store";
 
 import "react-native-reanimated";
-import "@/globals.css";
+import "@/src/globals.css";
 import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
 
 cssInterop(SafeAreaView, { className: "style" });
@@ -48,6 +48,7 @@ if (!publishableKey) {
 SplashScreen.preventAutoHideAsync();
 
 const App = () => {
+  // TODO: Hide SplashScreen when Clerk is loading.
   const { isLoaded } = useAuth();
 
   useEffect(() => {
@@ -63,9 +64,11 @@ const App = () => {
   }, [isLoaded]);
 
   return (
+    // <ClerkLoaded>
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Slot />
     </GestureHandlerRootView>
+    // </ClerkLoaded>
   );
 };
 
