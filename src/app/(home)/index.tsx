@@ -1,11 +1,9 @@
-import { View } from "react-native";
+import { FlatList, Text, View } from "react-native";
 import { SignedIn, useUser, useAuth } from "@clerk/clerk-expo";
 import { ClassTeacherData } from "@/@types/typings";
 
 import classTeachersData from "@/metadata.json";
 import { useMemo } from "react";
-
-// VertualizedList for rendering large list!
 
 export default () => {
   const { user } = useUser();
@@ -26,7 +24,19 @@ export default () => {
 
   return (
     <SignedIn>
-      <View className="bg-background h-full flex items-center"></View>
+      <View className="bg-background h-full flex items-center">
+        <FlatList
+          data={classTeacherData.students}
+          keyExtractor={(item) => item.name}
+          renderItem={({ item: studentData }) => (
+            <View>
+              <Text>{studentData.name}</Text>
+              <Text>{studentData.rollNo}</Text>
+              <Text>{studentData.attendance}</Text>
+            </View>
+          )}
+        />
+      </View>
     </SignedIn>
   );
 };
