@@ -1,17 +1,14 @@
-import { ReactNode, useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { LogBox, View } from "react-native";
+import { ActivityIndicator, LogBox } from "react-native";
 import { Slot } from "expo-router";
-import { cssInterop } from "nativewind";
-import { ClerkLoaded, ClerkProvider, useAuth } from "@clerk/clerk-expo";
-
-import * as SplashScreen from "expo-splash-screen";
+import { StatusBar } from "expo-status-bar";
+import { ClerkLoaded, ClerkLoading, ClerkProvider } from "@clerk/clerk-expo";
 import * as SecureStore from "expo-secure-store";
+import { cssInterop } from "nativewind";
 
 import "react-native-reanimated";
-import "../globals.css";
-import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
+import "@/src/globals.css";
 
 cssInterop(SafeAreaView, { className: "style" });
 
@@ -45,35 +42,24 @@ if (!publishableKey) {
   );
 }
 
-SplashScreen.preventAutoHideAsync();
-
-const App = () => {
-  const { isLoaded } = useAuth();
-
-  useEffect(() => {
-    const manageSplashScreen = async () => {
-      await SplashScreen.preventAutoHideAsync();
-
-      if (isLoaded) {
-        await SplashScreen.hideAsync();
-      }
-    };
-
-    manageSplashScreen();
-  }, [isLoaded]);
-
-  return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <Slot />
-    </GestureHandlerRootView>
-  );
-};
-
 export default () => {
   return (
     <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
-      <App />
-      <ExpoStatusBar style="dark" />
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <ClerkLoaded>
+          <Slot />
+        </ClerkLoaded>
+        <ClerkLoading>
+          <SafeAreaView className="flex-1 bg-background flex items-center justify-center">
+            <ActivityIndicator
+              size="large"
+              style={{ width: 70, height: 70 }}
+              color="#ab886d"
+            />
+          </SafeAreaView>
+        </ClerkLoading>
+        <StatusBar style="dark" animated translucent />
+      </GestureHandlerRootView>
     </ClerkProvider>
   );
 };
