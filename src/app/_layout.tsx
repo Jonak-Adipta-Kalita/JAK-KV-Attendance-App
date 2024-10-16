@@ -1,17 +1,14 @@
-import { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { LogBox } from "react-native";
+import { ActivityIndicator, LogBox } from "react-native";
 import { Slot } from "expo-router";
-import { cssInterop } from "nativewind";
-import { ClerkLoaded, ClerkProvider, useAuth } from "@clerk/clerk-expo";
-
-import * as SplashScreen from "expo-splash-screen";
+import { StatusBar } from "expo-status-bar";
+import { ClerkLoaded, ClerkLoading, ClerkProvider } from "@clerk/clerk-expo";
 import * as SecureStore from "expo-secure-store";
+import { cssInterop } from "nativewind";
 
 import "react-native-reanimated";
 import "@/src/globals.css";
-import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
 
 cssInterop(SafeAreaView, { className: "style" });
 
@@ -45,34 +42,24 @@ if (!publishableKey) {
   );
 }
 
-const App = () => {
-  // TODO: Show SplashScreen when Clerk is loading.
-  const { isLoaded } = useAuth();
-
-  useEffect(() => {
-    if (isLoaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [isLoaded]);
-
-  return (
-    // <ClerkLoaded>
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <Slot />
-    </GestureHandlerRootView>
-    // </ClerkLoaded>
-  );
-};
-
 export default () => {
-  useEffect(() => {
-    SplashScreen.preventAutoHideAsync();
-  }, []);
-
   return (
     <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
-      <App />
-      <ExpoStatusBar style="dark" />
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <ClerkLoaded>
+          <Slot />
+        </ClerkLoaded>
+        <ClerkLoading>
+          <SafeAreaView className="flex-1 bg-background flex items-center justify-center">
+            <ActivityIndicator
+              size="large"
+              style={{ width: 70, height: 70 }}
+              color="#ab886d"
+            />
+          </SafeAreaView>
+        </ClerkLoading>
+        <StatusBar style="dark" animated translucent />
+      </GestureHandlerRootView>
     </ClerkProvider>
   );
 };
