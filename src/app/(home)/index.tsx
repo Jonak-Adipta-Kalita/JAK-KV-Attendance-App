@@ -1,9 +1,19 @@
 import { FlatList, Text, View } from "react-native";
 import { SignedIn, useUser, useAuth } from "@clerk/clerk-expo";
-import { ClassTeacherData } from "@/@types/typings";
+import { ClassTeacherData, StudentData } from "@/@types/typings";
 
 import classTeachersData from "@/metadata.json";
 import { useMemo } from "react";
+
+const Student = ({ studentData }: { studentData: StudentData }) => {
+  return (
+    <View className="bg-primary p-4 rounded-lg min-w-[95%] max-w-[95%]">
+      <Text className="text-secondary text-lg font-semibold truncate text-nowrap">
+        {studentData.name}
+      </Text>
+    </View>
+  );
+};
 
 export default () => {
   const { user } = useUser();
@@ -28,13 +38,10 @@ export default () => {
         <FlatList
           data={classTeacherData.students}
           keyExtractor={(item) => item.name}
-          renderItem={({ item: studentData }) => (
-            <View>
-              <Text>{studentData.name}</Text>
-              <Text>{studentData.rollNo}</Text>
-              <Text>{studentData.attendance}</Text>
-            </View>
+          renderItem={({ item: studentData, index }) => (
+            <Student studentData={studentData} key={index} />
           )}
+          contentContainerClassName="gap-y-5 bg-background flex flex-col items-center mt-8"
         />
       </View>
     </SignedIn>
