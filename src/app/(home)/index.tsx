@@ -7,8 +7,8 @@ import { useMemo } from "react";
 
 const Student = ({ studentData }: { studentData: StudentData }) => {
   return (
-    <View className="bg-primary p-4 rounded-lg min-w-[95%] max-w-[95%]">
-      <Text className="text-secondary text-lg font-semibold truncate text-nowrap">
+    <View className="box-style min-w-[95%] max-w-[95%]">
+      <Text className="text-primary text-lg font-semibold truncate text-nowrap">
         {studentData.name}
       </Text>
     </View>
