@@ -34,16 +34,22 @@ export default () => {
 
   return (
     <SignedIn>
-      <View className="bg-background h-full flex items-center">
-        <FlatList
-          data={classTeacherData.students}
-          keyExtractor={(item) => item.name}
-          renderItem={({ item: studentData, index }) => (
-            <Student studentData={studentData} key={index} />
-          )}
-          contentContainerClassName="gap-y-5 bg-background flex flex-col items-center mt-8"
-        />
-        <Button title="Sign Out" onPress={() => signOut()} />
+      <View className="bg-background h-full">
+        <Text className="text-primary text-2xl tracking-widest font-extrabold self-center pt-5 px-5 mb-8">
+          Standard {classTeacherData.standard}({classTeacherData.section})
+        </Text>
+        {/* BUG: Last element isnt visible */}
+        <View className="flex items-center">
+          <FlatList
+            data={classTeacherData.students}
+            keyExtractor={(item) => item.name}
+            renderItem={({ item: studentData, index }) => (
+              <Student studentData={studentData} key={index} />
+            )}
+            contentContainerClassName="gap-y-5 bg-background flex flex-col items-center"
+          />
+        </View>
+        <View className="mb-8" />
       </View>
     </SignedIn>
   );
