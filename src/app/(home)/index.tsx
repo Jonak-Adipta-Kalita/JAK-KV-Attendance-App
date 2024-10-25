@@ -9,7 +9,7 @@ const Student = ({ studentData }: { studentData: StudentData }) => {
   return (
     <View className="box-style min-w-[95%] max-w-[95%]">
       <Text className="text-primary text-lg font-semibold truncate text-nowrap">
-        {studentData.name}
+        {studentData.rollNo} - {studentData.name}
       </Text>
     </View>
   );
