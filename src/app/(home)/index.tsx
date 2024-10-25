@@ -1,4 +1,4 @@
-import { FlatList, Text, View } from "react-native";
+import { Button, FlatList, Text, View } from "react-native";
 import { SignedIn, useUser, useAuth } from "@clerk/clerk-expo";
 import { ClassTeacherData, StudentData } from "@/@types/typings";
 
@@ -43,6 +43,7 @@ export default () => {
           )}
           contentContainerClassName="gap-y-5 bg-background flex flex-col items-center mt-8"
         />
+        <Button title="Sign Out" onPress={() => signOut()} />
       </View>
     </SignedIn>
   );
