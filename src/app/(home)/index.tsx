@@ -1,4 +1,4 @@
-import { Button, FlatList, Text, View } from "react-native";
+import { FlatList, Text, View } from "react-native";
 import { SignedIn, useUser, useAuth } from "@clerk/clerk-expo";
 import { ClassTeacherData, StudentData } from "@/@types/typings";
 
@@ -39,6 +39,7 @@ export default () => {
           Standard {classTeacherData.standard}({classTeacherData.section})
         </Text>
         {/* BUG: Last element isnt visible */}
+        {/* Use Table to display the data? */}
         <View className="flex items-center">
           <FlatList
             data={classTeacherData.students}
