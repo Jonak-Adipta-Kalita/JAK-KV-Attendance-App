@@ -1,12 +1,14 @@
 import { FlatList, Text, View } from "react-native";
 import { SignedIn, useUser, useAuth } from "@clerk/clerk-expo";
-import { ClassTeacherData, StudentData } from "@/@types/typings";
+import { Attendance, StudentData } from "@/@types/typings";
 
 import classTeachersData from "@/metadata.json";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 const Student = ({ studentData }: { studentData: StudentData }) => {
   const maxLength = 24;
+  // use global store instead of a functional state?
+  const [attendance, setAttendance] = useState<Attendance>("absent");
 
   return (
     <View className="box-style min-w-[95%] max-w-[95%] p-4">
@@ -19,7 +21,13 @@ const Student = ({ studentData }: { studentData: StudentData }) => {
           Roll No: {studentData.rollNo}
         </Text>
       </View>
-      <View>{/* Radio Buttons for Status! */}</View>
+      <View>
+        <View>
+          {/* Present */}
+          {/* Absent */}
+        </View>
+        {/* On Leave */}
+      </View>
     </View>
   );
 };
@@ -28,18 +36,13 @@ export default () => {
   const { user } = useUser();
   const { signOut } = useAuth();
 
-  const classTeacherData = useMemo(() => {
-    const classTeacherData: ClassTeacherData[] =
-      classTeachersData.class_teachers.map((teacher) => ({
-        ...teacher,
-        students: teacher.students.map((student) => ({
-          ...student,
-          attendance: "absent",
-        })),
-      }));
-
-    return classTeacherData.find((teacher) => teacher.id === user!.id)!;
-  }, [user!.id, classTeachersData]);
+  const classTeacherData = useMemo(
+    () =>
+      classTeachersData.class_teachers.find(
+        (teacher) => teacher.id === user!.id
+      )!,
+    [user!.id, classTeachersData]
+  );
 
   return (
     <SignedIn>

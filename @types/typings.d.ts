@@ -15,8 +15,10 @@ export interface ClassTeacherData {
   students: StudentData[];
 }
 
+export type Attendance = "present" | "absent" | "leave";
+
 export interface StudentData {
   name: string;
   rollNo: number;
-  attendance: "present" | "absent" | "leave";
+  attendance?: Attendance;
 }
