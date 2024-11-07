@@ -1,9 +1,37 @@
-import { FlatList, Text, View } from "react-native";
+import { useMemo, useState } from "react";
+import { FlatList, Text, TouchableOpacity, View } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { SignedIn, useUser, useAuth } from "@clerk/clerk-expo";
 import { Attendance, StudentData } from "@/@types/typings";
 
 import classTeachersData from "@/metadata.json";
-import { useMemo, useState } from "react";
+
+const AttendanceButton = ({ attendance }: { attendance: Attendance }) => {
+  return (
+    <TouchableOpacity className="flex flex-row p-4 items-center justify-center bg-zinc-700 rounded-lg">
+      <Ionicons
+        name={`${
+          attendance === "present"
+            ? "checkmark-circle"
+            : attendance === "absent"
+            ? "close-circle"
+            : "time"
+        }`}
+        color={
+          attendance === "present"
+            ? `#4ade80`
+            : attendance === "absent"
+            ? `#f87171`
+            : `#fbbf24`
+        }
+        size={24}
+      />
+      <Text className="ml-2 text-gray-300 font-bold tracking-wider text-base">
+        {attendance.charAt(0).toUpperCase() + attendance.slice(1)}
+      </Text>
+    </TouchableOpacity>
+  );
+};
 
 const Student = ({ studentData }: { studentData: StudentData }) => {
   const maxLength = 24;
@@ -21,12 +49,13 @@ const Student = ({ studentData }: { studentData: StudentData }) => {
           Roll No: {studentData.rollNo}
         </Text>
       </View>
-      <View>
-        <View>
-          {/* Present */}
-          {/* Absent */}
+      <View className="mt-5 gap-y-4">
+        <View className="flex flex-row">
+          {/* TODO: make buttons take the full half width! */}
+          <AttendanceButton attendance="present" />
+          <AttendanceButton attendance="absent" />
         </View>
-        {/* On Leave */}
+        <AttendanceButton attendance="leave" />
       </View>
     </View>
   );
