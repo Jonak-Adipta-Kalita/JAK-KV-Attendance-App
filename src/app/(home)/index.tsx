@@ -19,6 +19,10 @@ const AttendanceButton = ({
     <TouchableOpacity
       className={`flex flex-row p-4 items-center justify-center bg-zinc-700 rounded-lg ${
         uiStatus === attendance ? "bg-zinc-800/70 border-2 border-gray-800" : ""
+      } ${
+        ["absent", "present"].includes(attendance)
+          ? "flex-1"
+          : "flex-grow-0 mt-5"
       }`}
       onPress={() => setUIStatus(attendance)}
     >
@@ -62,26 +66,23 @@ const Student = ({ studentData }: { studentData: StudentData }) => {
           Roll No: {studentData.rollNo}
         </Text>
       </View>
-      <View className="mt-5 gap-y-4">
-        <View className="flex flex-row">
-          {/* TODO: make buttons take the full half width! */}
-          <AttendanceButton
-            attendance="present"
-            uiStatus={attendance}
-            setUIStatus={setAttendance}
-          />
-          <AttendanceButton
-            attendance="absent"
-            uiStatus={attendance}
-            setUIStatus={setAttendance}
-          />
-        </View>
+      <View className="mt-5 flex flex-row gap-4 items-center">
         <AttendanceButton
-          attendance="leave"
+          attendance="present"
+          uiStatus={attendance}
+          setUIStatus={setAttendance}
+        />
+        <AttendanceButton
+          attendance="absent"
           uiStatus={attendance}
           setUIStatus={setAttendance}
         />
       </View>
+      <AttendanceButton
+        attendance="leave"
+        uiStatus={attendance}
+        setUIStatus={setAttendance}
+      />
     </View>
   );
 };
