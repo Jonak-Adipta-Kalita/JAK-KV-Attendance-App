@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { Dispatch, SetStateAction, useMemo, useState } from "react";
 import { FlatList, Text, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { SignedIn, useUser, useAuth } from "@clerk/clerk-expo";
@@ -6,9 +6,22 @@ import { Attendance, StudentData } from "@/@types/typings";
 
 import classTeachersData from "@/metadata.json";
 
-const AttendanceButton = ({ attendance }: { attendance: Attendance }) => {
+const AttendanceButton = ({
+  attendance,
+  setUIStatus,
+  uiStatus,
+}: {
+  attendance: Attendance;
+  uiStatus: Attendance | null;
+  setUIStatus: Dispatch<SetStateAction<Attendance | null>>;
+}) => {
   return (
-    <TouchableOpacity className="flex flex-row p-4 items-center justify-center bg-zinc-700 rounded-lg">
+    <TouchableOpacity
+      className={`flex flex-row p-4 items-center justify-center bg-zinc-700 rounded-lg ${
+        uiStatus === attendance ? "bg-zinc-800/70 border-2 border-gray-800" : ""
+      }`}
+      onPress={() => setUIStatus(attendance)}
+    >
       <Ionicons
         name={`${
           attendance === "present"
@@ -36,7 +49,7 @@ const AttendanceButton = ({ attendance }: { attendance: Attendance }) => {
 const Student = ({ studentData }: { studentData: StudentData }) => {
   const maxLength = 24;
   // use global store instead of a functional state?
-  const [attendance, setAttendance] = useState<Attendance>("absent");
+  const [attendance, setAttendance] = useState<Attendance | null>(null);
 
   return (
     <View className="box-style min-w-[95%] max-w-[95%] p-4">
@@ -52,10 +65,22 @@ const Student = ({ studentData }: { studentData: StudentData }) => {
       <View className="mt-5 gap-y-4">
         <View className="flex flex-row">
           {/* TODO: make buttons take the full half width! */}
-          <AttendanceButton attendance="present" />
-          <AttendanceButton attendance="absent" />
+          <AttendanceButton
+            attendance="present"
+            uiStatus={attendance}
+            setUIStatus={setAttendance}
+          />
+          <AttendanceButton
+            attendance="absent"
+            uiStatus={attendance}
+            setUIStatus={setAttendance}
+          />
         </View>
-        <AttendanceButton attendance="leave" />
+        <AttendanceButton
+          attendance="leave"
+          uiStatus={attendance}
+          setUIStatus={setAttendance}
+        />
       </View>
     </View>
   );
