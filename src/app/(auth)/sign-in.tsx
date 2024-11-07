@@ -15,6 +15,8 @@ import { FontAwesome5 } from "@expo/vector-icons";
 const AnimatedTouchableOpacity =
   Animated.createAnimatedComponent(TouchableOpacity);
 
+//TODO: Make the screen look more professional?
+
 export default () => {
   const { signIn, setActive, isLoaded } = useSignIn();
   const router = useRouter();
