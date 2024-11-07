@@ -121,6 +121,7 @@ export default () => {
             placeholder="Username"
             onChangeText={(emailAddress) => setUsername(emailAddress)}
             className="box-style"
+            placeholderTextColor={"#a8a8a8"}
           />
           <View className="flex flex-row items-center justify-center relative">
             <TextInput
@@ -131,6 +132,7 @@ export default () => {
               placeholder="Password"
               onChangeText={(password) => setPassword(password)}
               className="box-style"
+              placeholderTextColor={"#a8a8a8"}
             />
             <TouchableOpacity
               onPress={() => setViewPassword(!viewPassword)}
@@ -138,9 +140,9 @@ export default () => {
               activeOpacity={0.55}
             >
               {!viewPassword ? (
-                <FontAwesome5 name="eye" size={22} color="#6B6B6B" />
+                <FontAwesome5 name="eye" size={22} color="#f5f5f5" />
               ) : (
-                <FontAwesome5 name="eye-slash" size={20} color="#6B6B6B" />
+                <FontAwesome5 name="eye-slash" size={20} color="#f5f5f5" />
               )}
             </TouchableOpacity>
           </View>
@@ -163,7 +165,7 @@ export default () => {
         className="flex items-center absolute bottom-10 gap-y-2"
         style={{ opacity: creditsFadeOpacity.current }}
       >
-        <Text className="text-primary/50 text-sm font-semibold">
+        <Text className="text-primary/50 text-sm font-semibold text-primary">
           Designed and Built by
         </Text>
         <Text className="text-primary text-sm font-semibold">
