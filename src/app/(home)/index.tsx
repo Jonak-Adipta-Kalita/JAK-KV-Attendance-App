@@ -19,11 +19,7 @@ const AttendanceButton = ({
     <TouchableOpacity
       className={`flex flex-row p-4 items-center justify-center bg-zinc-700 rounded-lg ${
         uiStatus === attendance ? "bg-zinc-800/70 border-2 border-gray-800" : ""
-      } ${
-        ["absent", "present"].includes(attendance)
-          ? "flex-1"
-          : "flex-grow-0 mt-5"
-      }`}
+      } ${["absent", "present"].includes(attendance) ? "flex-1" : "mt-5"}`}
       onPress={() => setUIStatus(attendance)}
     >
       <Ionicons
