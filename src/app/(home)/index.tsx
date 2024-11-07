@@ -9,17 +9,17 @@ const Student = ({ studentData }: { studentData: StudentData }) => {
   const maxLength = 24;
 
   return (
-    <View className="box-style min-w-[95%] max-w-[95%] flex flex-row justify-between p-4">
-      {/* <Text className="text-primary text-lg font-semibold truncate text-nowrap">
-        {studentData.rollNo} - {studentData.name}
-      </Text> */}
-      <Text className="text-primary font-bold truncate tracking-wide">
-        {studentData.name.slice(0, maxLength)}
-        {studentData.name.length > maxLength ? "..." : ""}
-      </Text>
-      <Text className="text-gray-300/80 font-semibold">
-        Roll No: {studentData.rollNo}
-      </Text>
+    <View className="box-style min-w-[95%] max-w-[95%] p-4">
+      <View className="flex flex-row justify-between">
+        <Text className="text-primary font-bold truncate tracking-wide">
+          {studentData.name.slice(0, maxLength)}
+          {studentData.name.length > maxLength ? "..." : ""}
+        </Text>
+        <Text className="text-gray-300/80 font-semibold">
+          Roll No: {studentData.rollNo}
+        </Text>
+      </View>
+      <View>{/* Radio Buttons for Status! */}</View>
     </View>
   );
 };
