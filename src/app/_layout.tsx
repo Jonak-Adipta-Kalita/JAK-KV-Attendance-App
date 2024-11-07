@@ -53,12 +53,12 @@ export default () => {
           <SafeAreaView className="flex-1 bg-background flex items-center justify-center">
             <ActivityIndicator
               size="large"
-              style={{ width: 70, height: 70 }}
-              color="#ab886d"
+              style={{ width: 70, height: 70, transform: [{ scale: 1.5 }] }}
+              color="#e0e0e0"
             />
           </SafeAreaView>
         </ClerkLoading>
-        <StatusBar style="dark" animated translucent />
+        <StatusBar style="auto" animated translucent />
       </GestureHandlerRootView>
     </ClerkProvider>
   );
