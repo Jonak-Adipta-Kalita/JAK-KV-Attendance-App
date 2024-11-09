@@ -12,13 +12,25 @@ const AttendanceButton = ({
   uiStatus,
 }: {
   attendance: Attendance;
-  uiStatus: Attendance | null;
-  setUIStatus: Dispatch<SetStateAction<Attendance | null>>;
+  uiStatus: Attendance;
+  setUIStatus: Dispatch<SetStateAction<Attendance>>;
 }) => {
+  const activeButtonStyle =
+    (() => {
+      switch (attendance) {
+        case "present":
+          return "bg-green-500/20 border-green-500";
+        case "absent":
+          return "bg-red-500/20 border-red-500";
+        case "leave":
+          return "bg-yellow-500/20 border-yellow-500";
+      }
+    })() + " border-[3px]";
+
   return (
     <TouchableOpacity
       className={`flex flex-row p-4 items-center justify-center bg-zinc-700 rounded-lg ${
-        uiStatus === attendance ? "bg-zinc-800/70 border-2 border-gray-800" : ""
+        uiStatus === attendance ? activeButtonStyle : ""
       } ${["absent", "present"].includes(attendance) ? "flex-1" : "mt-5"}`}
       onPress={() => setUIStatus(attendance)}
     >
@@ -39,7 +51,11 @@ const AttendanceButton = ({
         }
         size={24}
       />
-      <Text className="ml-2 text-gray-300 font-bold tracking-wider text-base">
+      <Text
+        className={`ml-2 ${
+          uiStatus === attendance ? "text-white" : "text-gray-300"
+        } font-bold tracking-wider text-base`}
+      >
         {attendance.charAt(0).toUpperCase() + attendance.slice(1)}
       </Text>
     </TouchableOpacity>
@@ -49,7 +65,7 @@ const AttendanceButton = ({
 const Student = ({ studentData }: { studentData: StudentData }) => {
   const maxLength = 24;
   // use global store instead of a functional state?
-  const [attendance, setAttendance] = useState<Attendance | null>(null);
+  const [attendance, setAttendance] = useState<Attendance>("absent");
 
   return (
     <View className="box-style min-w-[95%] max-w-[95%] p-4">
