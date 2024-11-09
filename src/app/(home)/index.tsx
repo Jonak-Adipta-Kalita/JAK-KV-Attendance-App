@@ -1,19 +1,20 @@
-import { Dispatch, SetStateAction, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { FlatList, Text, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { SignedIn, useUser, useAuth } from "@clerk/clerk-expo";
-import { Attendance, StudentData } from "@/@types/typings";
+import { Attendance, ClassTeacherData, StudentData } from "@/@types/typings";
 
 import classTeachersData from "@/metadata.json";
+import { useTeacherStore } from "@/src/store";
 
 const AttendanceButton = ({
   attendance,
-  setUIStatus,
   uiStatus,
+  onPress,
 }: {
   attendance: Attendance;
   uiStatus: Attendance;
-  setUIStatus: Dispatch<SetStateAction<Attendance>>;
+  onPress: () => void;
 }) => {
   const activeButtonStyle =
     (() => {
@@ -32,7 +33,7 @@ const AttendanceButton = ({
       className={`flex flex-row p-4 items-center justify-center bg-zinc-700 rounded-lg ${
         uiStatus === attendance ? activeButtonStyle : ""
       } ${["absent", "present"].includes(attendance) ? "flex-1" : "mt-5"}`}
-      onPress={() => setUIStatus(attendance)}
+      onPress={onPress}
     >
       <Ionicons
         name={`${
@@ -64,8 +65,18 @@ const AttendanceButton = ({
 
 const Student = ({ studentData }: { studentData: StudentData }) => {
   const maxLength = 24;
-  // use global store instead of a functional state?
-  const [attendance, setAttendance] = useState<Attendance>("absent");
+  const [attendance, setAttendance] = useState(studentData.attendance);
+  const updateStudentAttendance = useTeacherStore(
+    (state) => state.updateStudentAttendance
+  );
+
+  const onPress = useCallback(
+    (attendance: Attendance) => {
+      setAttendance(attendance);
+      updateStudentAttendance(studentData.rollNo, attendance);
+    },
+    [updateStudentAttendance, studentData.rollNo]
+  );
 
   return (
     <View className="box-style min-w-[95%] max-w-[95%] p-4">
@@ -82,18 +93,18 @@ const Student = ({ studentData }: { studentData: StudentData }) => {
         <AttendanceButton
           attendance="present"
           uiStatus={attendance}
-          setUIStatus={setAttendance}
+          onPress={() => onPress("present")}
         />
         <AttendanceButton
           attendance="absent"
           uiStatus={attendance}
-          setUIStatus={setAttendance}
+          onPress={() => onPress("absent")}
         />
       </View>
       <AttendanceButton
         attendance="leave"
         uiStatus={attendance}
-        setUIStatus={setAttendance}
+        onPress={() => onPress("leave")}
       />
     </View>
   );
@@ -103,17 +114,31 @@ export default () => {
   const { user } = useUser();
   const { signOut } = useAuth();
 
-  const classTeacherData = useMemo(
-    () =>
-      classTeachersData.class_teachers.find(
-        (teacher) => teacher.id === user!.id
-      )!,
-    [user!.id, classTeachersData]
-  );
+  const teacherData = useTeacherStore((state) => state.teacher);
+  const setTeacherData = useTeacherStore((state) => state.setTeacherData);
+
+  const classTeacherData = useMemo(() => {
+    const classTeacherData: ClassTeacherData[] =
+      classTeachersData.class_teachers.map((teacher) => ({
+        ...teacher,
+        students: teacher.students.map((student) => ({
+          ...student,
+          attendance: "absent",
+        })),
+      }));
+    return classTeacherData.find((teacher) => teacher.id === user!.id)!;
+  }, [user!.id, classTeachersData]); // put back the code of injecting the absent status into students
+
+  useEffect(() => {
+    setTeacherData({
+      name: user!.username!,
+      students: classTeacherData.students,
+    });
+  }, []);
 
   return (
     <SignedIn>
-      <View className="bg-background h-full">
+      <View className="bg-background h-full mb-8">
         <View className="flex items-center py-4">
           <FlatList
             data={classTeacherData.students}
@@ -124,7 +149,6 @@ export default () => {
             contentContainerClassName="gap-y-5 bg-background flex flex-col items-center"
           />
         </View>
-        <View className="mb-8" />
       </View>
     </SignedIn>
   );

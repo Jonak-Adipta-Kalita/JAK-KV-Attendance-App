@@ -20,5 +20,20 @@ export type Attendance = "present" | "absent" | "leave";
 export interface StudentData {
   name: string;
   rollNo: number;
-  attendance?: Attendance;
+  attendance: Attendance;
+}
+
+// For Global Store
+
+type TeacherStoreData = {
+  name: string;
+  students: StudentData[];
+};
+
+export interface TeacherStore {
+  teacher: TeacherStoreData;
+  setTeacherData: (teacherData: TeacherStoreData) => void;
+  updateStudentAttendance: (rollNo: number, attendance: Attendance) => void;
+  getStudent: (rollNo: number) => StudentData;
+  getStudents: () => StudentData[];
 }
