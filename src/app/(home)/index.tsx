@@ -129,7 +129,7 @@ export default () => {
                 })),
             }));
         return classTeacherData.find((teacher) => teacher.id === user!.id)!;
-    }, [user!.id, classTeachersData]); // put back the code of injecting the absent status into students
+    }, [user!.id, classTeachersData]);
 
     useEffect(() => {
         setTeacherData({
