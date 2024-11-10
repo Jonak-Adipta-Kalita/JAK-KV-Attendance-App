@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Button, FlatList, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, Text, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { SignedIn, useUser, useAuth } from "@clerk/clerk-expo";
 import { Attendance, ClassTeacherData, StudentData } from "@/@types/typings";
 
 import classTeachersData from "@/metadata.json";
 import { useTeacherStore } from "@/src/store";
+import { useRouter } from "expo-router";
 
 const AttendanceButton = ({
     attendance,
@@ -117,18 +118,28 @@ const ListHeader = () => {
 
     return (
         <View>
-            <Button title="Sign Out" onPress={() => signOut()} />
+            {/* <Button title="Sign Out" onPress={() => signOut()} /> */}
         </View>
     );
 };
 
 const ListFooter = () => {
-    return <View></View>;
+    const router = useRouter();
+
+    return (
+        <TouchableOpacity
+            className="bg-teal-700 p-4 rounded-lg my-5 w-[95%] flex items-center justify-center"
+            onPress={() => router.navigate("/(home)/confirm")}
+        >
+            <Text className="text-primary font-bold tracking-wider text-lg">
+                Confirm Attendance
+            </Text>
+        </TouchableOpacity>
+    );
 };
 
 export default () => {
     const { user } = useUser();
-    const teacherData = useTeacherStore((state) => state.teacher);
     const setTeacherData = useTeacherStore((state) => state.setTeacherData);
 
     const classTeacherData = useMemo(() => {
