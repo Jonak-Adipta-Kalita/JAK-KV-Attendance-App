@@ -1,5 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { FlatList, Text, TouchableOpacity, View } from "react-native";
+import {
+    Button,
+    FlatList,
+    ScrollView,
+    Text,
+    TouchableOpacity,
+    View,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { SignedIn, useUser, useAuth } from "@clerk/clerk-expo";
 import { Attendance, ClassTeacherData, StudentData } from "@/@types/typings";
@@ -112,10 +119,22 @@ const Student = ({ studentData }: { studentData: StudentData }) => {
     );
 };
 
-export default () => {
-    const { user } = useUser();
+const ListHeader = () => {
     const { signOut } = useAuth();
 
+    return (
+        <View>
+            <Button title="Sign Out" onPress={() => signOut()} />
+        </View>
+    );
+};
+
+const ListFooter = () => {
+    return <View></View>;
+};
+
+export default () => {
+    const { user } = useUser();
     const teacherData = useTeacherStore((state) => state.teacher);
     const setTeacherData = useTeacherStore((state) => state.setTeacherData);
 
@@ -141,16 +160,16 @@ export default () => {
     return (
         <SignedIn>
             <View className="bg-background h-full mb-8">
-                <View className="flex items-center py-4">
-                    <FlatList
-                        data={classTeacherData.students}
-                        keyExtractor={(item) => item.name}
-                        renderItem={({ item: studentData, index }) => (
-                            <Student studentData={studentData} key={index} />
-                        )}
-                        contentContainerClassName="gap-y-5 bg-background flex flex-col items-center"
-                    />
-                </View>
+                <FlatList
+                    data={classTeacherData.students}
+                    keyExtractor={(item) => item.name}
+                    renderItem={({ item: studentData, index }) => (
+                        <Student studentData={studentData} key={index} />
+                    )}
+                    contentContainerClassName="gap-y-5 bg-background flex flex-col items-center py-4 px-2"
+                    ListHeaderComponent={() => <ListHeader />}
+                    ListFooterComponent={() => <ListFooter />}
+                />
             </View>
         </SignedIn>
     );
