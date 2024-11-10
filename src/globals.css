@@ -3,18 +3,18 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --color-background: #333333;
-    --color-primary: #5c5c5c;
-    --color-secondary: #555555;
+    :root {
+        --color-background: #333333;
+        --color-primary: #5c5c5c;
+        --color-secondary: #555555;
 
-    --color-text-primary: #f5f5f5;
-    --color-text-secondary: #d1d1d1;
-  }
+        --color-text-primary: #f5f5f5;
+        --color-text-secondary: #d1d1d1;
+    }
 }
 
 @layer components {
-  .box-style {
-    @apply bg-secondary text-primary rounded-xl text-xl p-4 min-w-[83%] max-w-[83%];
-  }
+    .box-style {
+        @apply bg-secondary text-primary rounded-xl text-xl p-4 min-w-[83%] max-w-[83%];
+    }
 }

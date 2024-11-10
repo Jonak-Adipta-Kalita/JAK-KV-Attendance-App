@@ -4,13 +4,13 @@ import { Stack } from "expo-router/stack";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default () => {
-  const { isSignedIn } = useAuth();
+    const { isSignedIn } = useAuth();
 
-  if (!isSignedIn) return <Redirect href="/(auth)/sign-in" />;
+    if (!isSignedIn) return <Redirect href="/(auth)/sign-in" />;
 
-  return (
-    <SafeAreaView className="flex-1 bg-background">
-      <Stack screenOptions={{ headerShown: false }} />
-    </SafeAreaView>
-  );
+    return (
+        <SafeAreaView className="flex-1 bg-background">
+            <Stack screenOptions={{ headerShown: false }} />
+        </SafeAreaView>
+    );
 };
