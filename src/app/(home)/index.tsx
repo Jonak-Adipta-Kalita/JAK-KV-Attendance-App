@@ -1,6 +1,7 @@
+import classTeachersData from "@/metadata.json";
+
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
-    Alert,
     FlatList,
     Text,
     TextInput,
@@ -11,8 +12,6 @@ import Feather from "@expo/vector-icons/Feather";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { SignedIn, useUser, useAuth } from "@clerk/clerk-expo";
 import { Attendance, ClassTeacherData, StudentData } from "@/@types/typings";
-
-import classTeachersData from "@/metadata.json";
 import { useSearchStore, useTeacherStore } from "@/src/store";
 import { useRouter } from "expo-router";
 
@@ -165,8 +164,11 @@ const ListFooter = () => {
     );
 };
 
+// TODO FIX: whenever the searchstring changes, rerender occurs in the entire list, causing the keyboard to close and not persist if any additional text is added.
+
 export default () => {
     const { user } = useUser();
+    const searchString = useSearchStore((state) => state.search);
     const setTeacherData = useTeacherStore((state) => state.setTeacherData);
 
     const classTeacherData = useMemo(() => {
@@ -181,6 +183,10 @@ export default () => {
         return classTeacherData.find((teacher) => teacher.id === user!.id)!;
     }, [user!.id, classTeachersData]);
 
+    const [studentData, setStudentData] = useState<StudentData[]>(
+        classTeacherData.students
+    );
+
     useEffect(() => {
         setTeacherData({
             id: classTeacherData.id,
@@ -188,14 +194,25 @@ export default () => {
             section: classTeacherData.section,
             students: classTeacherData.students,
         });
-    }, []);
+    }, [classTeacherData]);
+
+    useEffect(() => {
+        if (searchString) {
+            const filteredData = classTeacherData.students.filter((student) =>
+                student.name.toLowerCase().includes(searchString.toLowerCase())
+            );
+            setStudentData(filteredData);
+        } else {
+            setStudentData(classTeacherData.students);
+        }
+    }, [searchString]);
 
     return (
         <SignedIn>
             <View className="bg-background h-full mb-8">
                 <FlatList
-                    data={classTeacherData.students}
-                    keyExtractor={(item) => item.name}
+                    data={studentData}
+                    keyExtractor={(item) => item.rollNo.toString()}
                     renderItem={({ item: studentData, index }) => (
                         <Student studentData={studentData} key={index} />
                     )}
