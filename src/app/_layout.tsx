@@ -9,6 +9,7 @@ import { cssInterop } from "nativewind";
 
 import "react-native-reanimated";
 import "@/src/globals.css";
+import SkeletonLoader from "../components/SkeletonLoader";
 
 cssInterop(SafeAreaView, { className: "style" });
 
@@ -47,11 +48,11 @@ export default () => {
         <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
             <GestureHandlerRootView style={{ flex: 1 }}>
                 <ClerkLoaded>
-                    <Slot />
-                </ClerkLoaded>
-                <ClerkLoading>
+                    {/* <Slot /> */}
+                    {/* </ClerkLoaded> */}
+                    {/* <ClerkLoading> */}
                     <SafeAreaView className="flex-1 bg-background flex items-center justify-center">
-                        <ActivityIndicator
+                        {/* <ActivityIndicator
                             size="large"
                             style={{
                                 width: 70,
@@ -59,9 +60,11 @@ export default () => {
                                 transform: [{ scale: 1.5 }],
                             }}
                             color="#e0e0e0"
-                        />
+                        /> */}
+                        <SkeletonLoader />
                     </SafeAreaView>
-                </ClerkLoading>
+                    {/* </ClerkLoading> */}
+                </ClerkLoaded>
                 <StatusBar style="auto" animated translucent />
             </GestureHandlerRootView>
         </ClerkProvider>
