@@ -124,32 +124,36 @@ const ListHeader = () => {
     const { signOut } = useAuth();
     const teacherData = useTeacherStore((state) => state.teacher);
 
-    const [localSearch, setLocalSearch] = useState("");
-    const setSearch = useSearchStore((state) => state.setSearch);
-
-    useEffect(() => {
-        // FIX: if the local search string is changed, check for more changes untill the user stops typing for some seconds, then update the global search string.
-    }, [setLocalSearch]);
+    const { search, setSearch } = useSearchStore();
+    const [localSearch, setLocalSearch] = useState(search);
 
     return (
         <View className="flex items-center min-w-[95%] max-w-[95%]">
-            <Text className="text-center text-secondary tracking-widest font-bold text-xl mb-5">
-                Standard: {teacherData.standard} ({teacherData.section})
-            </Text>
+            <View className="flex items-center flex-row justify-between w-full">
+                {/* Fix styling to be centered for the text */}
+                <Text className="text-secondary h-full place-items-center bg-red-500 tracking-widest font-bold text-xl mb-5 mr-10">
+                    Standard: {teacherData.standard} ({teacherData.section})
+                </Text>
+                <TouchableOpacity
+                    onPress={() => signOut()}
+                    className="bg-zinc-600 rounded-lg p-3"
+                >
+                    <Feather name="log-out" size={24} color="white" />
+                </TouchableOpacity>
+            </View>
             <View className="flex items-center flex-row">
                 <TextInput
-                    className="bg-zinc-600 p-4 text-primary font-semibold tracking-wider rounded-lg my-5 mr-10 flex-1"
+                    className="bg-zinc-600 p-4 text-primary font-semibold tracking-wider rounded-lg my-5 mr-5 flex-1"
                     placeholder="Search Students..."
                     placeholderTextColor={"#f5f5f5"}
                     value={localSearch}
                     onChangeText={setLocalSearch}
                 />
-                {/* Replace this with a search confirm button, place this somewhere else... */}
                 <TouchableOpacity
-                    onPress={() => signOut()}
-                    className="bg-zinc-600 rounded-full p-4"
+                    onPress={() => setSearch(localSearch)}
+                    className="bg-zinc-600 rounded-full p-3"
                 >
-                    <Feather name="log-out" size={24} color="white" />
+                    <Feather name="check-circle" size={30} color="white" />
                 </TouchableOpacity>
             </View>
         </View>
@@ -170,8 +174,6 @@ const ListFooter = () => {
         </TouchableOpacity>
     );
 };
-
-// TODO FIX: whenever the searchstring changes, rerender occurs in the entire list, causing the keyboard to close and not persist if any additional text is added.
 
 export default () => {
     const { user } = useUser();
@@ -217,6 +219,7 @@ export default () => {
     return (
         <SignedIn>
             <View className="bg-background h-full mb-8">
+                {/* Add Skeleton Loader */}
                 <FlatList
                     data={studentData}
                     keyExtractor={(item) => item.rollNo.toString()}
