@@ -123,7 +123,13 @@ const Student = ({ studentData }: { studentData: StudentData }) => {
 const ListHeader = () => {
     const { signOut } = useAuth();
     const teacherData = useTeacherStore((state) => state.teacher);
-    const { search, setSearch } = useSearchStore();
+
+    const [localSearch, setLocalSearch] = useState("");
+    const setSearch = useSearchStore((state) => state.setSearch);
+
+    useEffect(() => {
+        // FIX: if the local search string is changed, check for more changes untill the user stops typing for some seconds, then update the global search string.
+    }, [setLocalSearch]);
 
     return (
         <View className="flex items-center min-w-[95%] max-w-[95%]">
@@ -135,9 +141,10 @@ const ListHeader = () => {
                     className="bg-zinc-600 p-4 text-primary font-semibold tracking-wider rounded-lg my-5 mr-10 flex-1"
                     placeholder="Search Students..."
                     placeholderTextColor={"#f5f5f5"}
-                    value={search}
-                    onChangeText={setSearch}
+                    value={localSearch}
+                    onChangeText={setLocalSearch}
                 />
+                {/* Replace this with a search confirm button, place this somewhere else... */}
                 <TouchableOpacity
                     onPress={() => signOut()}
                     className="bg-zinc-600 rounded-full p-4"
