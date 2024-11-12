@@ -1,11 +1,19 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { FlatList, Text, TouchableOpacity, View } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import {
+    Alert,
+    FlatList,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
+} from "react-native";
+import Feather from "@expo/vector-icons/Feather";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { SignedIn, useUser, useAuth } from "@clerk/clerk-expo";
 import { Attendance, ClassTeacherData, StudentData } from "@/@types/typings";
 
 import classTeachersData from "@/metadata.json";
-import { useTeacherStore } from "@/src/store";
+import { useSearchStore, useTeacherStore } from "@/src/store";
 import { useRouter } from "expo-router";
 
 const AttendanceButton = ({
@@ -115,10 +123,29 @@ const Student = ({ studentData }: { studentData: StudentData }) => {
 
 const ListHeader = () => {
     const { signOut } = useAuth();
+    const teacherData = useTeacherStore((state) => state.teacher);
+    const { search, setSearch } = useSearchStore();
 
     return (
-        <View>
-            {/* <Button title="Sign Out" onPress={() => signOut()} /> */}
+        <View className="flex items-center min-w-[95%] max-w-[95%]">
+            <Text className="text-center text-secondary tracking-widest font-bold text-xl mb-5">
+                Standard: {teacherData.standard} ({teacherData.section})
+            </Text>
+            <View className="flex items-center flex-row">
+                <TextInput
+                    className="bg-zinc-600 p-4 text-primary font-semibold tracking-wider rounded-lg my-5 mr-10 flex-1"
+                    placeholder="Search Students..."
+                    placeholderTextColor={"#f5f5f5"}
+                    value={search}
+                    onChangeText={setSearch}
+                />
+                <TouchableOpacity
+                    onPress={() => signOut()}
+                    className="bg-zinc-600 rounded-full p-4"
+                >
+                    <Feather name="log-out" size={24} color="white" />
+                </TouchableOpacity>
+            </View>
         </View>
     );
 };
@@ -156,7 +183,9 @@ export default () => {
 
     useEffect(() => {
         setTeacherData({
-            name: user!.username!,
+            id: classTeacherData.id,
+            standard: classTeacherData.standard,
+            section: classTeacherData.section,
             students: classTeacherData.students,
         });
     }, []);

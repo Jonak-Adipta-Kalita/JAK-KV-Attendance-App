@@ -23,17 +23,15 @@ export interface StudentData {
     attendance: Attendance;
 }
 
-// For Global Store
-
-type TeacherStoreData = {
-    name: string;
-    students: StudentData[];
-};
-
 export interface TeacherStore {
-    teacher: TeacherStoreData;
-    setTeacherData: (teacherData: TeacherStoreData) => void;
+    teacher: ClassTeacherData;
+    setTeacherData: (teacherData: ClassTeacherData) => void;
     updateStudentAttendance: (rollNo: number, attendance: Attendance) => void;
     getStudent: (rollNo: number) => StudentData;
     getStudents: () => StudentData[];
+}
+
+export interface SearchStore {
+    search: string;
+    setSearch: (search: string) => void;
 }
