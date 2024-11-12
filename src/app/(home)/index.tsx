@@ -129,9 +129,8 @@ const ListHeader = () => {
 
     return (
         <View className="flex items-center min-w-[95%] max-w-[95%]">
-            <View className="flex items-center flex-row justify-between w-full">
-                {/* Fix styling to be centered for the text */}
-                <Text className="text-secondary h-full place-items-center bg-red-500 tracking-widest font-bold text-xl mb-5 mr-10">
+            <View className="flex items-center flex-row justify-between w-full mb-5">
+                <Text className="text-secondary tracking-widest font-bold text-xl mr-10 text-center">
                     Standard: {teacherData.standard} ({teacherData.section})
                 </Text>
                 <TouchableOpacity
@@ -186,7 +185,7 @@ export default () => {
                 ...teacher,
                 students: teacher.students.map((student) => ({
                     ...student,
-                    attendance: "absent",
+                    attendance: "present",
                 })),
             }));
         return classTeacherData.find((teacher) => teacher.id === user!.id)!;
