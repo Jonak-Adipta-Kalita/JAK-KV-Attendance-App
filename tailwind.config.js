@@ -7,7 +7,6 @@ module.exports = {
                 background: "var(--color-background)",
                 primary: "var(--color-primary)",
                 secondary: "var(--color-secondary)",
-                muted: "var(--color-muted)",
             },
             textColor: {
                 primary: "var(--color-text-primary)",
