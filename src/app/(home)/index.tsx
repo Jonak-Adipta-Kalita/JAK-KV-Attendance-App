@@ -14,6 +14,7 @@ import { SignedIn, useUser, useAuth } from "@clerk/clerk-expo";
 import { Attendance, ClassTeacherData, StudentData } from "@/@types/typings";
 import { useSearchStore, useTeacherStore } from "@/src/store";
 import { useRouter } from "expo-router";
+import SkeletonLoader from "@/src/components/SkeletonLoader";
 
 const AttendanceButton = ({
     attendance,
@@ -117,6 +118,7 @@ const Student = ({ studentData }: { studentData: StudentData }) => {
                 onPress={() => onPress("leave")}
             />
         </View>
+        // <SkeletonLoader height={500} width={300} />
     );
 };
 

@@ -8,14 +8,18 @@ import Animated, {
     withTiming,
 } from "react-native-reanimated";
 
-// The color looks off, its too light....
-
-const SkeletonLoader = () => {
-    const opacity = useSharedValue(0.5);
+const SkeletonLoader = ({
+    height,
+    width,
+}: {
+    width: number;
+    height: number;
+}) => {
+    const opacity = useSharedValue(1);
 
     opacity.value = withRepeat(
-        withTiming(0.2, {
-            duration: 1200,
+        withTiming(0.5, {
+            duration: 1000,
             easing: Easing.inOut(Easing.ease),
         }),
         -1,
@@ -28,15 +32,17 @@ const SkeletonLoader = () => {
         };
     });
 
-    return <Animated.View style={[styles.skeleton, animatedStyle]} />;
+    return (
+        <Animated.View
+            style={[styles.skeleton, animatedStyle, { width, height }]}
+        />
+    );
 };
 
 const styles = StyleSheet.create({
     skeleton: {
-        width: 120,
-        height: 120,
         borderRadius: 8,
-        backgroundColor: "hsl(210, 40%, 85%)",
+        backgroundColor: "rgb(51 65 85)",
     },
 });
 
