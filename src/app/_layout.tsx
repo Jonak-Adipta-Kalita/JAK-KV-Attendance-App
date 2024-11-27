@@ -9,7 +9,6 @@ import { cssInterop } from "nativewind";
 
 import "react-native-reanimated";
 import "@/src/globals.css";
-import SkeletonLoader from "../components/SkeletonLoader";
 
 cssInterop(SafeAreaView, { className: "style" });
 
