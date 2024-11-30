@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { TextInput, Button, View } from "react-native";
 import { useSignUp } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
@@ -12,7 +12,7 @@ const SignUpScreen = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    const onSignUpPress = async () => {
+    const onSignUpPress = useCallback(async () => {
         if (!isLoaded) {
             return;
         }
@@ -27,7 +27,7 @@ const SignUpScreen = () => {
         } catch (err: any) {
             console.error(JSON.stringify(err, null, 2));
         }
-    };
+    }, [isLoaded, password, router, setActive, signUp, username]);
 
     return (
         <View>

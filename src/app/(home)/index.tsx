@@ -73,7 +73,7 @@ const AttendanceButton = ({
     );
 };
 
-const Student = React.memo(({ studentData }: { studentData: StudentData }) => {
+const Student = ({ studentData }: { studentData: StudentData }) => {
     const maxLength = 24;
     const [attendance, setAttendance] = useState(studentData.attendance);
     const updateStudentAttendance = useTeacherStore(
@@ -119,9 +119,9 @@ const Student = React.memo(({ studentData }: { studentData: StudentData }) => {
         </View>
         // <SkeletonLoader height={500} width={300} />
     );
-});
+};
 
-const ListHeader = React.memo(() => {
+const ListHeader = () => {
     const { signOut } = useAuth();
     const teacherData = useTeacherStore((state) => state.teacher);
 
@@ -158,9 +158,9 @@ const ListHeader = React.memo(() => {
             </View>
         </View>
     );
-});
+};
 
-const ListFooter = React.memo(() => {
+const ListFooter = () => {
     const router = useRouter();
 
     return (
@@ -173,7 +173,11 @@ const ListFooter = React.memo(() => {
             </Text>
         </TouchableOpacity>
     );
-});
+};
+
+const StudentMemoized = React.memo(Student);
+const ListHeaderMemoized = React.memo(ListHeader);
+const ListFooterMemoized = React.memo(ListFooter);
 
 const HomeScreen = () => {
     const { user } = useUser();
@@ -226,11 +230,14 @@ const HomeScreen = () => {
                     data={studentData}
                     keyExtractor={(item) => item.rollNo.toString()}
                     renderItem={({ item: studentData, index }) => (
-                        <Student studentData={studentData} key={index} />
+                        <StudentMemoized
+                            studentData={studentData}
+                            key={index}
+                        />
                     )}
                     contentContainerClassName="gap-y-5 bg-background flex flex-col items-center py-4 px-2"
-                    ListHeaderComponent={() => <ListHeader />}
-                    ListFooterComponent={() => <ListFooter />}
+                    ListHeaderComponent={() => <ListHeaderMemoized />}
+                    ListFooterComponent={() => <ListFooterMemoized />}
                 />
             </View>
         </SignedIn>
