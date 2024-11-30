@@ -3,7 +3,7 @@ import { Redirect } from "expo-router";
 import { Stack } from "expo-router/stack";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default () => {
+const HomeLayout = () => {
     const { isSignedIn } = useAuth();
 
     if (!isSignedIn) return <Redirect href="/(auth)/sign-in" />;
@@ -14,3 +14,5 @@ export default () => {
         </SafeAreaView>
     );
 };
+
+export default HomeLayout;

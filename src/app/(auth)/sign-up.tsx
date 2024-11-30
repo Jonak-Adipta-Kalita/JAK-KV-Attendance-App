@@ -5,7 +5,7 @@ import { useRouter } from "expo-router";
 
 // TODO: Only allow Admin Account to create Users
 
-export default () => {
+const SignUpScreen = () => {
     const { isLoaded, signUp, setActive } = useSignUp();
     const router = useRouter();
 
@@ -47,3 +47,5 @@ export default () => {
         </View>
     );
 };
+
+export default SignUpScreen;

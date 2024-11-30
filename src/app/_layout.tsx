@@ -20,7 +20,7 @@ const tokenCache = {
     async getToken(key: string) {
         try {
             return await SecureStore.getItemAsync(key);
-        } catch (error) {
+        } catch (_) {
             await SecureStore.deleteItemAsync(key);
             return null;
         }
@@ -28,7 +28,7 @@ const tokenCache = {
     async saveToken(key: string, value: string) {
         try {
             return SecureStore.setItemAsync(key, value);
-        } catch (err) {
+        } catch (_) {
             return;
         }
     },
@@ -42,7 +42,7 @@ if (!publishableKey) {
     );
 }
 
-export default () => {
+const RootLayout = () => {
     return (
         <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
             <GestureHandlerRootView style={{ flex: 1 }}>
@@ -67,3 +67,5 @@ export default () => {
         </ClerkProvider>
     );
 };
+
+export default RootLayout;

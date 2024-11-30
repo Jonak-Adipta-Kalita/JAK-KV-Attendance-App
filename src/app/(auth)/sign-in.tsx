@@ -17,7 +17,7 @@ const AnimatedTouchableOpacity =
 
 //TODO: Make the screen look more professional?
 
-export default () => {
+const SignInScreen = () => {
     const { signIn, setActive, isLoaded } = useSignIn();
     const router = useRouter();
 
@@ -80,7 +80,7 @@ export default () => {
         } finally {
             await pulseSignInBtn("stop");
         }
-    }, [isLoaded, username, password]);
+    }, [isLoaded, username, password, router, setActive, signIn]);
 
     const disabledButton = !isLoaded || !username || !password;
 
@@ -188,3 +188,5 @@ export default () => {
         </KeyboardAvoidingView>
     );
 };
+
+export default SignInScreen;

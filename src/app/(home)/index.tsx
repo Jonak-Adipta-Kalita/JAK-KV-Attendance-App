@@ -14,7 +14,6 @@ import { SignedIn, useUser, useAuth } from "@clerk/clerk-expo";
 import { Attendance, ClassTeacherData, StudentData } from "@/@types/typings";
 import { useSearchStore, useTeacherStore } from "@/src/store";
 import { useRouter } from "expo-router";
-import SkeletonLoader from "@/src/components/SkeletonLoader";
 
 const AttendanceButton = ({
     attendance,
@@ -51,15 +50,15 @@ const AttendanceButton = ({
                     attendance === "present"
                         ? "checkmark-circle"
                         : attendance === "absent"
-                        ? "close-circle"
-                        : "time"
+                          ? "close-circle"
+                          : "time"
                 }`}
                 color={
                     attendance === "present"
                         ? `#4ade80`
                         : attendance === "absent"
-                        ? `#f87171`
-                        : `#fbbf24`
+                          ? `#f87171`
+                          : `#fbbf24`
                 }
                 size={24}
             />
@@ -176,7 +175,7 @@ const ListFooter = () => {
     );
 };
 
-export default () => {
+const HomeScreen = () => {
     const { user } = useUser();
     const searchString = useSearchStore((state) => state.search);
     const setTeacherData = useTeacherStore((state) => state.setTeacherData);
@@ -191,20 +190,22 @@ export default () => {
                 })),
             }));
         return classTeacherData.find((teacher) => teacher.id === user!.id)!;
-    }, [user!.id, classTeachersData]);
+    }, [user]);
 
     const [studentData, setStudentData] = useState<StudentData[]>(
         classTeacherData.students
     );
 
     useEffect(() => {
+        const { id, section, standard, students } = classTeacherData;
+
         setTeacherData({
-            id: classTeacherData.id,
-            standard: classTeacherData.standard,
-            section: classTeacherData.section,
-            students: classTeacherData.students,
+            id: id,
+            standard: standard,
+            section: section,
+            students: students,
         });
-    }, [classTeacherData]);
+    }, [classTeacherData, setTeacherData]);
 
     useEffect(() => {
         if (searchString) {
@@ -215,7 +216,7 @@ export default () => {
         } else {
             setStudentData(classTeacherData.students);
         }
-    }, [searchString]);
+    }, [searchString, classTeacherData.students]);
 
     return (
         <SignedIn>
@@ -235,3 +236,5 @@ export default () => {
         </SignedIn>
     );
 };
+
+export default HomeScreen;
