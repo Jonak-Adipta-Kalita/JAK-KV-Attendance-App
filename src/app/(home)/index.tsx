@@ -1,6 +1,6 @@
 import classTeachersData from "@/metadata.json";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
     FlatList,
     Text,
@@ -73,7 +73,7 @@ const AttendanceButton = ({
     );
 };
 
-const Student = ({ studentData }: { studentData: StudentData }) => {
+const Student = React.memo(({ studentData }: { studentData: StudentData }) => {
     const maxLength = 24;
     const [attendance, setAttendance] = useState(studentData.attendance);
     const updateStudentAttendance = useTeacherStore(
@@ -119,9 +119,9 @@ const Student = ({ studentData }: { studentData: StudentData }) => {
         </View>
         // <SkeletonLoader height={500} width={300} />
     );
-};
+});
 
-const ListHeader = () => {
+const ListHeader = React.memo(() => {
     const { signOut } = useAuth();
     const teacherData = useTeacherStore((state) => state.teacher);
 
@@ -158,9 +158,9 @@ const ListHeader = () => {
             </View>
         </View>
     );
-};
+});
 
-const ListFooter = () => {
+const ListFooter = React.memo(() => {
     const router = useRouter();
 
     return (
@@ -173,7 +173,7 @@ const ListFooter = () => {
             </Text>
         </TouchableOpacity>
     );
-};
+});
 
 const HomeScreen = () => {
     const { user } = useUser();
