@@ -41,8 +41,8 @@ const SkeletonLoader = ({
 
 const styles = StyleSheet.create({
     skeleton: {
-        borderRadius: 8,
         backgroundColor: "rgb(51 65 85)",
+        borderRadius: 8,
     },
 });
 
