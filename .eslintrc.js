@@ -27,6 +27,7 @@ module.exports = {
         "react-hooks",
         "@typescript-eslint",
         "react-native",
+        "eslint-plugin-react-compiler",
     ],
     ignorePatterns: ["/dist/*"],
     rules: {
@@ -43,7 +44,9 @@ module.exports = {
         "import/prefer-default-export": "off",
         "react-native/no-color-literals": "off",
         "react-native/no-inline-styles": "off",
-        "typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-require-imports": "off",
+        "react-compiler/react-compiler": "error",
     },
     settings: {
         react: {
