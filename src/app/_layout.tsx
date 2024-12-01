@@ -1,3 +1,4 @@
+import React from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ActivityIndicator, LogBox } from "react-native";
@@ -6,11 +7,19 @@ import { StatusBar } from "expo-status-bar";
 import { ClerkLoaded, ClerkLoading, ClerkProvider } from "@clerk/clerk-expo";
 import * as SecureStore from "expo-secure-store";
 import { cssInterop } from "nativewind";
+import * as SplashScreen from "expo-splash-screen";
 
 import "react-native-reanimated";
 import "@/src/globals.css";
 
 cssInterop(SafeAreaView, { className: "style" });
+
+// TODO: Setup Clerk loading SplashScreen thingie
+// SplashScreen.preventAutoHideAsync();
+// SplashScreen.setOptions({
+//     duration: 1000,
+//     fade: true,
+// });
 
 LogBox.ignoreLogs([
     "Clerk has been loaded with development keys. Development instances have strict usage limits and should not be used when deploying your application to production",
@@ -43,7 +52,10 @@ if (!publishableKey) {
 }
 
 const RootLayout = () => {
+    // TODO: Enable StrictMode for React Compiler
+
     return (
+        // <React.StrictMode>
         <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
             <GestureHandlerRootView style={{ flex: 1 }}>
                 <ClerkLoaded>
@@ -65,6 +77,7 @@ const RootLayout = () => {
                 <StatusBar style="auto" animated translucent />
             </GestureHandlerRootView>
         </ClerkProvider>
+        // </React.StrictMode>
     );
 };
 
