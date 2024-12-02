@@ -15,8 +15,6 @@ import { FontAwesome5 } from "@expo/vector-icons";
 const AnimatedTouchableOpacity =
     Animated.createAnimatedComponent(TouchableOpacity);
 
-//TODO: Make the screen look more professional?
-
 const SignInScreen = () => {
     const { signIn, setActive, isLoaded } = useSignIn();
     const router = useRouter();
@@ -79,7 +77,7 @@ const SignInScreen = () => {
         } catch (err: any) {
             console.error(JSON.stringify(err, null, 2));
         } finally {
-            await pulseSignInBtn("stop");
+            pulseSignInBtn("stop");
         }
     }, [isLoaded, username, password, router, setActive, signIn]);
 
