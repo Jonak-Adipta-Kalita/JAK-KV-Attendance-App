@@ -1,3 +1,4 @@
+// TODO: Load the classTeachersData from a backend database instead of a json
 import classTeachersData from "@/metadata.json";
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
@@ -141,6 +142,7 @@ const ListHeader = () => {
                 </TouchableOpacity>
             </View>
             <View className="flex items-center flex-row">
+                {/* TODO: let the button be pressed even when input is active */}
                 <TextInput
                     className="bg-zinc-600 p-4 text-primary font-semibold tracking-wider rounded-lg my-5 mr-5 flex-1"
                     placeholder="Search Students..."
@@ -183,6 +185,8 @@ const HomeScreen = () => {
     const searchString = useSearchStore((state) => state.search);
     const setTeacherData = useTeacherStore((state) => state.setTeacherData);
 
+    // TODO: Do this stuff globally so that we could do the SplashScreen stuff
+    // """
     const classTeacherData = useMemo(() => {
         const classTeacherData: ClassTeacherData[] =
             classTeachersData.class_teachers.map((teacher) => ({
@@ -195,10 +199,6 @@ const HomeScreen = () => {
         return classTeacherData.find((teacher) => teacher.id === user!.id)!;
     }, [user]);
 
-    const [studentData, setStudentData] = useState<StudentData[]>(
-        classTeacherData.students
-    );
-
     useEffect(() => {
         const { id, section, standard, students } = classTeacherData;
 
@@ -209,6 +209,11 @@ const HomeScreen = () => {
             students: students,
         });
     }, [classTeacherData, setTeacherData]);
+    // """"
+
+    const [studentData, setStudentData] = useState<StudentData[]>(
+        classTeacherData.students
+    );
 
     useEffect(() => {
         if (searchString) {
@@ -217,6 +222,7 @@ const HomeScreen = () => {
             );
             setStudentData(filteredData);
         } else {
+            // TODO: There is a slow odd lag when the search is cleared
             setStudentData(classTeacherData.students);
         }
     }, [searchString, classTeacherData.students]);
