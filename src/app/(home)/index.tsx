@@ -1,7 +1,4 @@
-// TODO: Load the classTeachersData from a backend database instead of a json
-import classTeachersData from "@/metadata.json";
-
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
     FlatList,
     Text,
@@ -12,7 +9,7 @@ import {
 import Feather from "@expo/vector-icons/Feather";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { SignedIn, useUser, useAuth } from "@clerk/clerk-expo";
-import { Attendance, ClassTeacherData, StudentData } from "@/@types/typings";
+import { Attendance, StudentData } from "@/@types/typings";
 import { useSearchStore, useTeacherStore } from "@/src/store";
 import { useRouter } from "expo-router";
 
@@ -181,35 +178,8 @@ const ListHeaderMemoized = React.memo(ListHeader);
 const ListFooterMemoized = React.memo(ListFooter);
 
 const HomeScreen = () => {
-    const { user } = useUser();
     const searchString = useSearchStore((state) => state.search);
-    const setTeacherData = useTeacherStore((state) => state.setTeacherData);
-
-    // TODO: Do this stuff globally so that we could do the SplashScreen stuff
-    // """
-    const classTeacherData = useMemo(() => {
-        const classTeacherData: ClassTeacherData[] =
-            classTeachersData.class_teachers.map((teacher) => ({
-                ...teacher,
-                students: teacher.students.map((student) => ({
-                    ...student,
-                    attendance: "present",
-                })),
-            }));
-        return classTeacherData.find((teacher) => teacher.id === user!.id)!;
-    }, [user]);
-
-    useEffect(() => {
-        const { id, section, standard, students } = classTeacherData;
-
-        setTeacherData({
-            id: id,
-            standard: standard,
-            section: section,
-            students: students,
-        });
-    }, [classTeacherData, setTeacherData]);
-    // """"
+    const classTeacherData = useTeacherStore((state) => state.teacher);
 
     const [studentData, setStudentData] = useState<StudentData[]>(
         classTeacherData.students
