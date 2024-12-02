@@ -29,6 +29,7 @@ const SignInScreen = () => {
     const creditsFadeOpacity = useRef(new Animated.Value(1));
     const signingInOpacity = useRef(new Animated.Value(1));
 
+    // TODO: Fix the wierd fast transition....
     const pulseSignInBtn = (action: "start" | "stop") => {
         if (action === "start") {
             Animated.loop(
