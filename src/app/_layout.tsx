@@ -14,7 +14,7 @@ import "@/src/globals.css";
 
 cssInterop(SafeAreaView, { className: "style" });
 
-// TODO: Setup Clerk loading SplashScreen thingie
+// TODO: Setup SplashScreen for Clerk && Metadata
 // SplashScreen.preventAutoHideAsync();
 // SplashScreen.setOptions({
 //     duration: 1000,
@@ -55,7 +55,6 @@ const RootLayout = () => {
     // TODO: Enable StrictMode for React Compiler
 
     return (
-        // <React.StrictMode>
         <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
             <GestureHandlerRootView style={{ flex: 1 }}>
                 <ClerkLoaded>
@@ -77,7 +76,6 @@ const RootLayout = () => {
                 <StatusBar style="auto" animated translucent />
             </GestureHandlerRootView>
         </ClerkProvider>
-        // </React.StrictMode>
     );
 };
 

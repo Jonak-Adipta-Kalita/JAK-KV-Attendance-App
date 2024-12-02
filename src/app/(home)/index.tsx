@@ -117,7 +117,6 @@ const Student = ({ studentData }: { studentData: StudentData }) => {
                 onPress={() => onPress("leave")}
             />
         </View>
-        // <SkeletonLoader height={500} width={300} />
     );
 };
 
