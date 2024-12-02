@@ -224,7 +224,6 @@ const HomeScreen = () => {
     return (
         <SignedIn>
             <View className="bg-background h-full mb-8">
-                {/* Add Skeleton Loader */}
                 <FlatList
                     data={studentData}
                     keyExtractor={(item) => item.rollNo.toString()}
