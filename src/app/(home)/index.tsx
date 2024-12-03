@@ -148,7 +148,7 @@ const ListHeader = () => {
                 </TouchableOpacity>
             </View>
             <View className="flex items-center flex-row">
-                {/* TODO: let the button be pressed even when input is active */}
+                {/* TODO: let the button be pressed even when input/keyboard is active */}
                 <TextInput
                     className="bg-zinc-600 p-4 text-primary font-semibold tracking-wider rounded-lg my-5 mr-5 flex-1"
                     placeholder="Search Students..."
