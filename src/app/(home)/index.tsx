@@ -218,10 +218,10 @@ const HomeScreen = () => {
                     data={filteredData}
                     initialNumToRender={10}
                     maxToRenderPerBatch={10}
-                    windowSize={21} // Recommended for better performance
+                    windowSize={21}
                     removeClippedSubviews={true}
                     getItemLayout={(data, index) => ({
-                        length: 120, // Approximate height of each student item
+                        length: 120,
                         offset: 120 * index,
                         index,
                     })}
