@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import Feather from "@expo/vector-icons/Feather";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { SignedIn, useUser, useAuth } from "@clerk/clerk-expo";
+import { useUser, useAuth } from "@clerk/clerk-expo";
 import { Attendance, ClassTeacherData, StudentData } from "@/@types/typings";
 import { useSearchStore, useTeacherStore } from "@/src/store";
 import { useRouter } from "expo-router";
@@ -124,6 +124,7 @@ const Student = ({ studentData }: { studentData: StudentData }) => {
 
 const ListHeader = () => {
     const { signOut } = useAuth();
+    const router = useRouter();
     const teacherData = useTeacherStore((state) => state.teacher);
 
     const { search, setSearch } = useSearchStore();
@@ -136,7 +137,11 @@ const ListHeader = () => {
                     Standard: {teacherData.standard} ({teacherData.section})
                 </Text>
                 <TouchableOpacity
-                    onPress={() => signOut()}
+                    onPress={() => {
+                        signOut();
+                        // TODO: THERE IS LAG IN HERE ASWELL!!!
+                        router.replace("/(auth)/sign-in");
+                    }}
                     className="bg-zinc-600 rounded-lg p-3"
                 >
                     <Feather name="log-out" size={24} color="white" />
@@ -212,32 +217,30 @@ const HomeScreen = () => {
     }, [searchString, classTeacherData.students]);
 
     return (
-        <SignedIn>
-            <View className="bg-background h-full mb-8">
-                <FlatList
-                    data={filteredData}
-                    initialNumToRender={10}
-                    maxToRenderPerBatch={10}
-                    windowSize={21}
-                    removeClippedSubviews={true}
-                    getItemLayout={(data, index) => ({
-                        length: 120,
-                        offset: 120 * index,
-                        index,
-                    })}
-                    keyExtractor={(item) => item.rollNo.toString()}
-                    renderItem={({ item: studentData }) => (
-                        <StudentMemoized
-                            key={studentData.rollNo}
-                            studentData={studentData}
-                        />
-                    )}
-                    contentContainerClassName="gap-y-5 bg-background flex flex-col items-center py-4 px-2"
-                    ListHeaderComponent={ListHeaderMemoized}
-                    ListFooterComponent={ListFooterMemoized}
-                />
-            </View>
-        </SignedIn>
+        <View className="bg-background h-full mb-8">
+            <FlatList
+                data={filteredData}
+                initialNumToRender={10}
+                maxToRenderPerBatch={10}
+                windowSize={21}
+                removeClippedSubviews={true}
+                getItemLayout={(data, index) => ({
+                    length: 120,
+                    offset: 120 * index,
+                    index,
+                })}
+                keyExtractor={(item) => item.rollNo.toString()}
+                renderItem={({ item: studentData }) => (
+                    <StudentMemoized
+                        key={studentData.rollNo}
+                        studentData={studentData}
+                    />
+                )}
+                contentContainerClassName="gap-y-5 bg-background flex flex-col items-center py-4 px-2"
+                ListHeaderComponent={ListHeaderMemoized}
+                ListFooterComponent={ListFooterMemoized}
+            />
+        </View>
     );
 };
 
