@@ -66,8 +66,6 @@ const ClerkLoadedComponent = () => {
 };
 
 const RootLayout = () => {
-    // TODO: Enable StrictMode for React Compiler
-
     return (
         <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
             <GestureHandlerRootView style={{ flex: 1 }}>

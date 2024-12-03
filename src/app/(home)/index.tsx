@@ -82,10 +82,13 @@ const Student = ({ studentData }: { studentData: StudentData }) => {
         (state) => state.updateStudentAttendance
     );
 
-    const onPress = (attendance: Attendance) => {
-        setAttendance(attendance);
-        updateStudentAttendance(studentData.rollNo, attendance);
-    };
+    const onPress = useCallback(
+        (attendance: Attendance) => {
+            setAttendance(attendance);
+            updateStudentAttendance(studentData.rollNo, attendance);
+        },
+        [studentData.rollNo, updateStudentAttendance]
+    );
 
     return (
         <View className="box-style min-w-[95%] max-w-[95%] p-4">
@@ -215,14 +218,23 @@ const HomeScreen = () => {
                     data={filteredData}
                     initialNumToRender={10}
                     maxToRenderPerBatch={10}
-                    removeClippedSubviews
+                    windowSize={21} // Recommended for better performance
+                    removeClippedSubviews={true}
+                    getItemLayout={(data, index) => ({
+                        length: 120, // Approximate height of each student item
+                        offset: 120 * index,
+                        index,
+                    })}
                     keyExtractor={(item) => item.rollNo.toString()}
                     renderItem={({ item: studentData }) => (
-                        <StudentMemoized studentData={studentData} />
+                        <StudentMemoized
+                            key={studentData.rollNo}
+                            studentData={studentData}
+                        />
                     )}
                     contentContainerClassName="gap-y-5 bg-background flex flex-col items-center py-4 px-2"
-                    ListHeaderComponent={() => <ListHeaderMemoized />}
-                    ListFooterComponent={() => <ListFooterMemoized />}
+                    ListHeaderComponent={ListHeaderMemoized}
+                    ListFooterComponent={ListFooterMemoized}
                 />
             </View>
         </SignedIn>
