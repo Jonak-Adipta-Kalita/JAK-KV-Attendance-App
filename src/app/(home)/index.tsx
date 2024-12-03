@@ -201,7 +201,6 @@ const HomeScreen = () => {
     }, [classTeacherData, setTeacherData]);
 
     const filteredData = useMemo(() => {
-        // TODO: Do some perf shit here
         if (!searchString) return classTeacherData.students;
 
         return classTeacherData.students.filter((student) =>
