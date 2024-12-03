@@ -16,3 +16,5 @@ Roadmap for Optimizing:
 - Optimize the Flatlist showing the student cards
 
 - Use a backend rest api for handling complex algorithms?
+- Use Debugging Tools: https://docs.expo.dev/debugging/tools/
+- PLEASE USE THE REACT DEV TOOLS SOMEHOW ;-; I want to Profile and check for Rerenders using it...
