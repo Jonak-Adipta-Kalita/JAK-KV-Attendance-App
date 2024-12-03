@@ -25,22 +25,21 @@ const AttendanceButton = ({
     uiStatus: Attendance;
     onPress: () => void;
 }) => {
-    const activeButtonStyle =
-        (() => {
-            switch (attendance) {
-                case "present":
-                    return "bg-green-500/20 border-green-500";
-                case "absent":
-                    return "bg-red-500/20 border-red-500";
-                case "leave":
-                    return "bg-yellow-500/20 border-yellow-500";
-            }
-        })() + " border-[3px]";
+    const activeButtonStyle = (() => {
+        switch (attendance) {
+            case "present":
+                return "bg-green-500/20 border-green-500";
+            case "absent":
+                return "bg-red-500/20 border-red-500";
+            case "leave":
+                return "bg-yellow-500/20 border-yellow-500";
+        }
+    })();
 
     return (
         <TouchableOpacity
-            className={`flex flex-row p-4 items-center justify-center bg-zinc-700 rounded-lg ${
-                uiStatus === attendance ? activeButtonStyle : ""
+            className={`flex flex-row p-4 items-center justify-center bg-zinc-700 rounded-lg border-[3px] ${
+                uiStatus === attendance ? activeButtonStyle : "border-secondary"
             } ${
                 ["absent", "present"].includes(attendance) ? "flex-1" : "mt-5"
             }`}
@@ -74,6 +73,8 @@ const AttendanceButton = ({
     );
 };
 
+const AttendanceButtonMemoized = React.memo(AttendanceButton);
+
 const Student = ({ studentData }: { studentData: StudentData }) => {
     const maxLength = 24;
     const [attendance, setAttendance] = useState(studentData.attendance);
@@ -81,13 +82,10 @@ const Student = ({ studentData }: { studentData: StudentData }) => {
         (state) => state.updateStudentAttendance
     );
 
-    const onPress = useCallback(
-        (attendance: Attendance) => {
-            setAttendance(attendance);
-            updateStudentAttendance(studentData.rollNo, attendance);
-        },
-        [updateStudentAttendance, studentData.rollNo]
-    );
+    const onPress = (attendance: Attendance) => {
+        setAttendance(attendance);
+        updateStudentAttendance(studentData.rollNo, attendance);
+    };
 
     return (
         <View className="box-style min-w-[95%] max-w-[95%] p-4">
@@ -101,21 +99,21 @@ const Student = ({ studentData }: { studentData: StudentData }) => {
                 </Text>
             </View>
             <View className="mt-5 flex flex-row gap-4 items-center">
-                <AttendanceButton
+                <AttendanceButtonMemoized
                     attendance="present"
                     uiStatus={attendance}
-                    onPress={() => onPress("present")}
+                    onPress={useCallback(() => onPress("present"), [])}
                 />
-                <AttendanceButton
+                <AttendanceButtonMemoized
                     attendance="absent"
                     uiStatus={attendance}
-                    onPress={() => onPress("absent")}
+                    onPress={useCallback(() => onPress("absent"), [])}
                 />
             </View>
-            <AttendanceButton
+            <AttendanceButtonMemoized
                 attendance="leave"
                 uiStatus={attendance}
-                onPress={() => onPress("leave")}
+                onPress={useCallback(() => onPress("leave"), [])}
             />
         </View>
     );
@@ -185,8 +183,7 @@ const HomeScreen = () => {
     const searchString = useSearchStore((state) => state.search);
     const setTeacherData = useTeacherStore((state) => state.setTeacherData);
 
-    // TODO: Do this stuff globally so that we could do the SplashScreen stuff
-    // """
+    // TODO: Do this stuff globally so that we could do the SplashScreen stuff? But.... is it gonna become slow...?
     const classTeacherData = useMemo(() => {
         const classTeacherData: ClassTeacherData[] =
             classTeachersData.class_teachers.map((teacher) => ({
@@ -200,44 +197,29 @@ const HomeScreen = () => {
     }, [user]);
 
     useEffect(() => {
-        const { id, section, standard, students } = classTeacherData;
-
-        setTeacherData({
-            id: id,
-            standard: standard,
-            section: section,
-            students: students,
-        });
+        setTeacherData(classTeacherData);
     }, [classTeacherData, setTeacherData]);
-    // """"
 
-    const [studentData, setStudentData] = useState<StudentData[]>(
-        classTeacherData.students
-    );
+    const filteredData = useMemo(() => {
+        // TODO: Do some perf shit here
+        if (!searchString) return classTeacherData.students;
 
-    useEffect(() => {
-        if (searchString) {
-            const filteredData = classTeacherData.students.filter((student) =>
-                student.name.toLowerCase().includes(searchString.toLowerCase())
-            );
-            setStudentData(filteredData);
-        } else {
-            // TODO: There is a slow odd lag when the search is cleared
-            setStudentData(classTeacherData.students);
-        }
+        return classTeacherData.students.filter((student) =>
+            student.name.toLowerCase().includes(searchString.toLowerCase())
+        );
     }, [searchString, classTeacherData.students]);
 
     return (
         <SignedIn>
             <View className="bg-background h-full mb-8">
                 <FlatList
-                    data={studentData}
+                    data={filteredData}
+                    initialNumToRender={10}
+                    maxToRenderPerBatch={10}
+                    removeClippedSubviews
                     keyExtractor={(item) => item.rollNo.toString()}
-                    renderItem={({ item: studentData, index }) => (
-                        <StudentMemoized
-                            studentData={studentData}
-                            key={index}
-                        />
+                    renderItem={({ item: studentData }) => (
+                        <StudentMemoized studentData={studentData} />
                     )}
                     contentContainerClassName="gap-y-5 bg-background flex flex-col items-center py-4 px-2"
                     ListHeaderComponent={() => <ListHeaderMemoized />}

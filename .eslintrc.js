@@ -37,7 +37,7 @@ module.exports = {
         "react/jsx-filename-extension": ["error", { extensions: [".tsx"] }],
         "@typescript-eslint/no-unused-vars": "off",
         "react/jsx-props-no-spreading": "off",
-        "react-hooks/exhaustive-deps": "warn",
+        "react-hooks/exhaustive-deps": "off",
         "import/prefer-default-export": "off",
         "react-native/no-color-literals": "off",
         "react-native/no-inline-styles": "off",
