@@ -124,7 +124,6 @@ const Student = ({ studentData }: { studentData: StudentData }) => {
 
 const ListHeader = () => {
     const { signOut } = useAuth();
-    const router = useRouter();
     const teacherData = useTeacherStore((state) => state.teacher);
 
     const { search, setSearch } = useSearchStore();
@@ -137,10 +136,10 @@ const ListHeader = () => {
                     Standard: {teacherData.standard} ({teacherData.section})
                 </Text>
                 <TouchableOpacity
-                    onPress={() => {
-                        signOut();
-                        // TODO: THERE IS LAG IN HERE ASWELL!!!
-                        router.replace("/(auth)/sign-in");
+                    onPress={async () => {
+                        await signOut();
+                        // TODO: Fix slow navigation
+                        // router.replace("/(auth)/sign-in");
                     }}
                     className="bg-zinc-600 rounded-lg p-3"
                 >
