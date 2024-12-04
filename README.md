@@ -8,7 +8,7 @@
 
 ### Auth Optimizing
 
-- SignIn wierd button opacity transition
+- SignIn wierd button opacity transition (due to new rn-animated version?)
 - Logout Button acting very odd and wierd
 - SignIn screen not showing when logging out automatically
 
