@@ -36,8 +36,6 @@ const AttendanceButton = ({
         }
     })();
 
-    console.log("rerender", attendance);
-
     return (
         <TouchableOpacity
             className={`flex flex-row p-4 items-center justify-center bg-zinc-700 rounded-lg border-[3px] ${
@@ -89,8 +87,6 @@ const Student = ({ studentData }: { studentData: StudentData }) => {
         updateStudentAttendance(studentData.rollNo, attendance);
     }, []);
 
-    console.log();
-
     return (
         <View className="box-style min-w-[95%] max-w-[95%] p-4">
             <View className="flex flex-row justify-between">
@@ -139,8 +135,7 @@ const ListHeader = () => {
                 <TouchableOpacity
                     onPress={async () => {
                         await signOut();
-                        // TODO: Fix slow navigation
-                        // router.replace("/(auth)/sign-in");
+                        // TODO: Add a overlay translucent spinner untill the signout is complete
                     }}
                     className="bg-zinc-600 rounded-lg p-3"
                 >

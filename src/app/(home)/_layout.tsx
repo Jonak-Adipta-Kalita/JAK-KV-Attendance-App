@@ -6,7 +6,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 const HomeLayout = () => {
     const { isSignedIn } = useAuth();
 
-    if (!isSignedIn) return <Redirect href="/(auth)/sign-in" />;
+    if (!isSignedIn) {
+        console.log("hello");
+        return <Redirect href="/(auth)/sign-in" />;
+    }
 
     return (
         <SignedIn>

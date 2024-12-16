@@ -9,8 +9,8 @@
 ### Auth Optimizing
 
 - SignIn wierd button opacity transition (due to new rn-animated version?)
-- Logout Button acting very odd and wierd
-- SignIn screen not showing when logging out automatically
+- ✅ Logout Button acting very odd and wierd | Reason: Syncronized onPress
+- ✅ SignIn screen not showing when logging out automatically | Reason: Time lag for signing out
 
 ### HomeScreen Optimizing
 
