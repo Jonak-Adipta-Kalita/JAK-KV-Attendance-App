@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import Feather from "@expo/vector-icons/Feather";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { SignedIn, useUser, useAuth } from "@clerk/clerk-expo";
+import { useUser, useAuth } from "@clerk/clerk-expo";
 import { Attendance, ClassTeacherData, StudentData } from "@/@types/typings";
 import { useSearchStore, useTeacherStore } from "@/src/store";
 import { useRouter } from "expo-router";
@@ -35,6 +35,8 @@ const AttendanceButton = ({
                 return "bg-yellow-500/20 border-yellow-500";
         }
     })();
+
+    console.log("rerender", attendance);
 
     return (
         <TouchableOpacity
@@ -82,13 +84,12 @@ const Student = ({ studentData }: { studentData: StudentData }) => {
         (state) => state.updateStudentAttendance
     );
 
-    const onPress = useCallback(
-        (attendance: Attendance) => {
-            setAttendance(attendance);
-            updateStudentAttendance(studentData.rollNo, attendance);
-        },
-        [studentData.rollNo, updateStudentAttendance]
-    );
+    const onPress = useCallback((attendance: Attendance) => {
+        setAttendance(attendance);
+        updateStudentAttendance(studentData.rollNo, attendance);
+    }, []);
+
+    console.log();
 
     return (
         <View className="box-style min-w-[95%] max-w-[95%] p-4">
@@ -136,14 +137,18 @@ const ListHeader = () => {
                     Standard: {teacherData.standard} ({teacherData.section})
                 </Text>
                 <TouchableOpacity
-                    onPress={() => signOut()}
+                    onPress={async () => {
+                        await signOut();
+                        // TODO: Fix slow navigation
+                        // router.replace("/(auth)/sign-in");
+                    }}
                     className="bg-zinc-600 rounded-lg p-3"
                 >
                     <Feather name="log-out" size={24} color="white" />
                 </TouchableOpacity>
             </View>
             <View className="flex items-center flex-row">
-                {/* TODO: let the button be pressed even when input is active */}
+                {/* TODO: let the button be pressed even when input/keyboard is active */}
                 <TextInput
                     className="bg-zinc-600 p-4 text-primary font-semibold tracking-wider rounded-lg my-5 mr-5 flex-1"
                     placeholder="Search Students..."
@@ -187,17 +192,19 @@ const HomeScreen = () => {
     const setTeacherData = useTeacherStore((state) => state.setTeacherData);
 
     // TODO: Do this stuff globally so that we could do the SplashScreen stuff? But.... is it gonna become slow...?
-    const classTeacherData = useMemo(() => {
-        const classTeacherData: ClassTeacherData[] =
-            classTeachersData.class_teachers.map((teacher) => ({
-                ...teacher,
-                students: teacher.students.map((student) => ({
-                    ...student,
-                    attendance: "present",
-                })),
-            }));
-        return classTeacherData.find((teacher) => teacher.id === user!.id)!;
-    }, [user]);
+    const classTeacherData: ClassTeacherData = useMemo(
+        () =>
+            classTeachersData.class_teachers
+                .map<ClassTeacherData>((teacher) => ({
+                    ...teacher,
+                    students: teacher.students.map((student) => ({
+                        ...student,
+                        attendance: "present",
+                    })),
+                }))
+                .find((teacher) => teacher.id === user!.id)!,
+        [user]
+    );
 
     useEffect(() => {
         setTeacherData(classTeacherData);
@@ -212,32 +219,31 @@ const HomeScreen = () => {
     }, [searchString, classTeacherData.students]);
 
     return (
-        <SignedIn>
-            <View className="bg-background h-full mb-8">
-                <FlatList
-                    data={filteredData}
-                    initialNumToRender={10}
-                    maxToRenderPerBatch={10}
-                    windowSize={21}
-                    removeClippedSubviews={true}
-                    getItemLayout={(data, index) => ({
-                        length: 120,
-                        offset: 120 * index,
-                        index,
-                    })}
-                    keyExtractor={(item) => item.rollNo.toString()}
-                    renderItem={({ item: studentData }) => (
-                        <StudentMemoized
-                            key={studentData.rollNo}
-                            studentData={studentData}
-                        />
-                    )}
-                    contentContainerClassName="gap-y-5 bg-background flex flex-col items-center py-4 px-2"
-                    ListHeaderComponent={ListHeaderMemoized}
-                    ListFooterComponent={ListFooterMemoized}
-                />
-            </View>
-        </SignedIn>
+        <View className="bg-background h-full mb-8">
+            {/* TODO: Fix wierd behaviours of the FlatList ;-; */}
+            <FlatList
+                data={filteredData}
+                initialNumToRender={5}
+                maxToRenderPerBatch={10}
+                windowSize={20}
+                removeClippedSubviews={true}
+                getItemLayout={(_, index) => ({
+                    length: 120,
+                    offset: 120 * index,
+                    index,
+                })}
+                keyExtractor={(item) => item.rollNo.toString()}
+                renderItem={({ item: studentData }) => (
+                    <StudentMemoized
+                        key={studentData.rollNo}
+                        studentData={studentData}
+                    />
+                )}
+                contentContainerClassName="gap-y-5 bg-background flex flex-col items-center py-4 px-2"
+                ListHeaderComponent={ListHeaderMemoized}
+                ListFooterComponent={ListFooterMemoized}
+            />
+        </View>
     );
 };
 
