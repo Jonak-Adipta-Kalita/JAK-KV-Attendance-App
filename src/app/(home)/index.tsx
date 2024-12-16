@@ -4,6 +4,7 @@ import classTeachersData from "@/metadata.json";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
     FlatList,
+    ListRenderItemInfo,
     Text,
     TextInput,
     TouchableOpacity,
@@ -35,6 +36,8 @@ const AttendanceButton = ({
                 return "bg-yellow-500/20 border-yellow-500";
         }
     })();
+
+    console.log("Rendering AttendanceButton:", attendance);
 
     return (
         <TouchableOpacity
@@ -87,6 +90,12 @@ const Student = ({ studentData }: { studentData: StudentData }) => {
         updateStudentAttendance(studentData.rollNo, attendance);
     }, []);
 
+    const onPressPresent = useCallback(() => onPress("present"), []);
+    const onPressAbsent = useCallback(() => onPress("absent"), []);
+    const onPressLeave = useCallback(() => onPress("leave"), []);
+
+    console.log();
+
     return (
         <View className="box-style min-w-[95%] max-w-[95%] p-4">
             <View className="flex flex-row justify-between">
@@ -102,18 +111,18 @@ const Student = ({ studentData }: { studentData: StudentData }) => {
                 <AttendanceButtonMemoized
                     attendance="present"
                     uiStatus={attendance}
-                    onPress={useCallback(() => onPress("present"), [])}
+                    onPress={onPressPresent}
                 />
                 <AttendanceButtonMemoized
                     attendance="absent"
                     uiStatus={attendance}
-                    onPress={useCallback(() => onPress("absent"), [])}
+                    onPress={onPressAbsent}
                 />
             </View>
             <AttendanceButtonMemoized
                 attendance="leave"
                 uiStatus={attendance}
-                onPress={useCallback(() => onPress("leave"), [])}
+                onPress={onPressLeave}
             />
         </View>
     );
@@ -213,27 +222,20 @@ const HomeScreen = () => {
         );
     }, [searchString, classTeacherData.students]);
 
+    const renderItem = ({
+        item: studentData,
+    }: ListRenderItemInfo<StudentData>) => (
+        <StudentMemoized key={studentData.rollNo} studentData={studentData} />
+    );
+
     return (
         <View className="bg-background h-full mb-8">
             {/* TODO: Fix wierd behaviours of the FlatList ;-; */}
             <FlatList
                 data={filteredData}
                 initialNumToRender={5}
-                maxToRenderPerBatch={10}
-                windowSize={20}
-                removeClippedSubviews={true}
-                getItemLayout={(_, index) => ({
-                    length: 120,
-                    offset: 120 * index,
-                    index,
-                })}
                 keyExtractor={(item) => item.rollNo.toString()}
-                renderItem={({ item: studentData }) => (
-                    <StudentMemoized
-                        key={studentData.rollNo}
-                        studentData={studentData}
-                    />
-                )}
+                renderItem={renderItem}
                 contentContainerClassName="gap-y-5 bg-background flex flex-col items-center py-4 px-2"
                 ListHeaderComponent={ListHeaderMemoized}
                 ListFooterComponent={ListFooterMemoized}
