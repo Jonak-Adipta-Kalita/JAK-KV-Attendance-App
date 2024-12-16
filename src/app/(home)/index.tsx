@@ -36,6 +36,8 @@ const AttendanceButton = ({
         }
     })();
 
+    console.log("rerender", attendance);
+
     return (
         <TouchableOpacity
             className={`flex flex-row p-4 items-center justify-center bg-zinc-700 rounded-lg border-[3px] ${
@@ -82,13 +84,12 @@ const Student = ({ studentData }: { studentData: StudentData }) => {
         (state) => state.updateStudentAttendance
     );
 
-    const onPress = useCallback(
-        (attendance: Attendance) => {
-            setAttendance(attendance);
-            updateStudentAttendance(studentData.rollNo, attendance);
-        },
-        [studentData.rollNo, updateStudentAttendance]
-    );
+    const onPress = useCallback((attendance: Attendance) => {
+        setAttendance(attendance);
+        updateStudentAttendance(studentData.rollNo, attendance);
+    }, []);
+
+    console.log();
 
     return (
         <View className="box-style min-w-[95%] max-w-[95%] p-4">
@@ -191,17 +192,19 @@ const HomeScreen = () => {
     const setTeacherData = useTeacherStore((state) => state.setTeacherData);
 
     // TODO: Do this stuff globally so that we could do the SplashScreen stuff? But.... is it gonna become slow...?
-    const classTeacherData = useMemo(() => {
-        const classTeacherData: ClassTeacherData[] =
-            classTeachersData.class_teachers.map((teacher) => ({
-                ...teacher,
-                students: teacher.students.map((student) => ({
-                    ...student,
-                    attendance: "present",
-                })),
-            }));
-        return classTeacherData.find((teacher) => teacher.id === user!.id)!;
-    }, [user]);
+    const classTeacherData: ClassTeacherData = useMemo(
+        () =>
+            classTeachersData.class_teachers
+                .map<ClassTeacherData>((teacher) => ({
+                    ...teacher,
+                    students: teacher.students.map((student) => ({
+                        ...student,
+                        attendance: "present",
+                    })),
+                }))
+                .find((teacher) => teacher.id === user!.id)!,
+        [user]
+    );
 
     useEffect(() => {
         setTeacherData(classTeacherData);
@@ -217,13 +220,14 @@ const HomeScreen = () => {
 
     return (
         <View className="bg-background h-full mb-8">
+            {/* TODO: Fix wierd behaviours of the FlatList ;-; */}
             <FlatList
                 data={filteredData}
-                initialNumToRender={10}
+                initialNumToRender={5}
                 maxToRenderPerBatch={10}
-                windowSize={21}
+                windowSize={20}
                 removeClippedSubviews={true}
-                getItemLayout={(data, index) => ({
+                getItemLayout={(_, index) => ({
                     length: 120,
                     offset: 120 * index,
                     index,
