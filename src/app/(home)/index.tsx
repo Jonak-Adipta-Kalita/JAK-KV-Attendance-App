@@ -1,5 +1,5 @@
 // TODO: Load the classTeachersData from a backend database instead of a json
-import classTeachersData from "@/metadata.json";
+import cTData from "@/metadata.json";
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
@@ -16,6 +16,8 @@ import { useUser, useAuth } from "@clerk/clerk-expo";
 import { Attendance, ClassTeacherData, StudentData } from "@/@types/typings";
 import { useSearchStore, useTeacherStore } from "@/src/store";
 import { useRouter } from "expo-router";
+
+const classTeachersData = cTData;
 
 const AttendanceButton = ({
     attendance,
