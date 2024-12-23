@@ -7,7 +7,6 @@ const HomeLayout = () => {
     const { isSignedIn } = useAuth();
 
     if (!isSignedIn) {
-        console.log("hello");
         return <Redirect href="/(auth)/sign-in" />;
     }
 
