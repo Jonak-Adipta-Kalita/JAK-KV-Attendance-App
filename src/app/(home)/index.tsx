@@ -21,11 +21,11 @@ const classTeachersData = cTData;
 
 const AttendanceButton = ({
     attendance,
-    uiStatus,
+    isActive,
     onPress,
 }: {
     attendance: Attendance;
-    uiStatus: Attendance;
+    isActive: boolean;
     onPress: () => void;
 }) => {
     const activeButtonStyle = (() => {
@@ -44,7 +44,7 @@ const AttendanceButton = ({
     return (
         <TouchableOpacity
             className={`flex flex-row p-4 items-center justify-center bg-zinc-700 rounded-lg border-[3px] ${
-                uiStatus === attendance ? activeButtonStyle : "border-secondary"
+                isActive ? activeButtonStyle : "border-secondary"
             } ${
                 ["absent", "present"].includes(attendance) ? "flex-1" : "mt-5"
             }`}
@@ -69,7 +69,7 @@ const AttendanceButton = ({
             />
             <Text
                 className={`ml-2 ${
-                    uiStatus === attendance ? "text-white" : "text-gray-300"
+                    isActive ? "text-white" : "text-gray-300"
                 } font-bold tracking-wider text-base`}
             >
                 {attendance.charAt(0).toUpperCase() + attendance.slice(1)}
@@ -112,18 +112,18 @@ const Student = ({ studentData }: { studentData: StudentData }) => {
             <View className="mt-5 flex flex-row gap-4 items-center">
                 <AttendanceButtonMemoized
                     attendance="present"
-                    uiStatus={attendance}
+                    isActive={attendance === "present"}
                     onPress={onPressPresent}
                 />
                 <AttendanceButtonMemoized
                     attendance="absent"
-                    uiStatus={attendance}
+                    isActive={attendance === "absent"}
                     onPress={onPressAbsent}
                 />
             </View>
             <AttendanceButtonMemoized
                 attendance="leave"
-                uiStatus={attendance}
+                isActive={attendance === "leave"}
                 onPress={onPressLeave}
             />
         </View>
