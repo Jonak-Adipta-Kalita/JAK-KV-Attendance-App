@@ -225,15 +225,15 @@ const HomeScreen = () => {
     return (
         <View className="bg-background h-full mb-8">
             {/* TODO: Fix wierd behaviours of the FlatList ;-; */}
-            {/* TODO: Add Pagination with one page containing just 15 cards */}
             <FlatList
                 data={filteredData}
-                initialNumToRender={5}
+                initialNumToRender={15}
                 keyExtractor={(item) => item.rollNo.toString()}
                 renderItem={renderItem}
                 contentContainerClassName="gap-y-5 bg-background flex flex-col items-center py-4 px-2"
                 ListHeaderComponent={ListHeaderMemoized}
                 ListFooterComponent={ListFooterMemoized}
+                removeClippedSubviews
             />
         </View>
     );
