@@ -39,8 +39,6 @@ const AttendanceButton = ({
         }
     })();
 
-    console.log("Rendering AttendanceButton:", attendance);
-
     return (
         <TouchableOpacity
             className={`flex flex-row p-4 items-center justify-center bg-zinc-700 rounded-lg border-[3px] ${
@@ -76,8 +74,7 @@ const AttendanceButton = ({
 
 const AttendanceButtonMemoized = React.memo(AttendanceButton);
 
-const Student = ({ studentData }: { studentData: StudentData }) => {
-    const maxLength = 24;
+const AttendanceButtons = ({ studentData }: { studentData: StudentData }) => {
     const [attendance, setAttendance] = useState(studentData.attendance);
     const updateStudentAttendance = useTeacherStore(
         (state) => state.updateStudentAttendance
@@ -88,19 +85,8 @@ const Student = ({ studentData }: { studentData: StudentData }) => {
         updateStudentAttendance(studentData.rollNo, attendance);
     }, []);
 
-    console.log();
-
     return (
-        <View className="box-style min-w-[95%] max-w-[95%] p-4">
-            <View className="flex flex-row justify-between">
-                <Text className="text-primary font-bold truncate tracking-wide">
-                    {studentData.name.slice(0, maxLength)}
-                    {studentData.name.length > maxLength ? "..." : ""}
-                </Text>
-                <Text className="text-gray-300/80 font-semibold">
-                    Roll No: {studentData.rollNo}
-                </Text>
-            </View>
+        <>
             <View className="mt-5 flex flex-row gap-4 items-center">
                 <AttendanceButtonMemoized
                     attendance="present"
@@ -118,6 +104,27 @@ const Student = ({ studentData }: { studentData: StudentData }) => {
                 isActive={attendance === "leave"}
                 onPress={onPress}
             />
+        </>
+    );
+};
+
+const AttendanceButtonsMemoized = React.memo(AttendanceButtons);
+
+const Student = ({ studentData }: { studentData: StudentData }) => {
+    const maxLength = 24;
+
+    return (
+        <View className="box-style min-w-[95%] max-w-[95%] p-4">
+            <View className="flex flex-row justify-between">
+                <Text className="text-primary font-bold truncate tracking-wide">
+                    {studentData.name.slice(0, maxLength)}
+                    {studentData.name.length > maxLength ? "..." : ""}
+                </Text>
+                <Text className="text-gray-300/80 font-semibold">
+                    Roll No: {studentData.rollNo}
+                </Text>
+            </View>
+            <AttendanceButtonsMemoized studentData={studentData} />
         </View>
     );
 };
