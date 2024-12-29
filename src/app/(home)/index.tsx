@@ -26,7 +26,7 @@ const AttendanceButton = ({
 }: {
     attendance: Attendance;
     isActive: boolean;
-    onPress: () => void;
+    onPress: (attendance: Attendance) => void;
 }) => {
     const activeButtonStyle = (() => {
         switch (attendance) {
@@ -48,7 +48,7 @@ const AttendanceButton = ({
             } ${
                 ["absent", "present"].includes(attendance) ? "flex-1" : "mt-5"
             }`}
-            onPress={onPress}
+            onPress={() => onPress(attendance)}
         >
             <Ionicons
                 name={`${
@@ -67,11 +67,7 @@ const AttendanceButton = ({
                 }
                 size={24}
             />
-            <Text
-                className={`ml-2 ${
-                    isActive ? "text-white" : "text-gray-300"
-                } font-bold tracking-wider text-base`}
-            >
+            <Text className="ml-2 text-gray-300 font-bold tracking-wider text-base">
                 {attendance.charAt(0).toUpperCase() + attendance.slice(1)}
             </Text>
         </TouchableOpacity>
@@ -92,10 +88,6 @@ const Student = ({ studentData }: { studentData: StudentData }) => {
         updateStudentAttendance(studentData.rollNo, attendance);
     }, []);
 
-    const onPressPresent = useCallback(() => onPress("present"), []);
-    const onPressAbsent = useCallback(() => onPress("absent"), []);
-    const onPressLeave = useCallback(() => onPress("leave"), []);
-
     console.log();
 
     return (
@@ -113,18 +105,18 @@ const Student = ({ studentData }: { studentData: StudentData }) => {
                 <AttendanceButtonMemoized
                     attendance="present"
                     isActive={attendance === "present"}
-                    onPress={onPressPresent}
+                    onPress={onPress}
                 />
                 <AttendanceButtonMemoized
                     attendance="absent"
                     isActive={attendance === "absent"}
-                    onPress={onPressAbsent}
+                    onPress={onPress}
                 />
             </View>
             <AttendanceButtonMemoized
                 attendance="leave"
                 isActive={attendance === "leave"}
-                onPress={onPressLeave}
+                onPress={onPress}
             />
         </View>
     );
@@ -233,6 +225,7 @@ const HomeScreen = () => {
     return (
         <View className="bg-background h-full mb-8">
             {/* TODO: Fix wierd behaviours of the FlatList ;-; */}
+            {/* TODO: Add Pagination with one page containing just 15 cards */}
             <FlatList
                 data={filteredData}
                 initialNumToRender={5}
