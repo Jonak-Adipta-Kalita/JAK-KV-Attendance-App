@@ -240,7 +240,6 @@ const HomeScreen = () => {
                 contentContainerClassName="gap-y-5 bg-background flex flex-col items-center py-4 px-2"
                 ListHeaderComponent={ListHeaderMemoized}
                 ListFooterComponent={ListFooterMemoized}
-                removeClippedSubviews
             />
         </View>
     );
