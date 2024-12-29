@@ -3,6 +3,7 @@
 ## Thoughts:
 
 - Is expo-dev-client needed to be removed for production? or is it done automatically? What about the package being in package.json? Does it need to be uninstalled?
+- How does the number of elements in a FlatList affects the performance of one element? Does it affect the performance of the whole list?
 
 ## Roadmap for Optimizing:
 
