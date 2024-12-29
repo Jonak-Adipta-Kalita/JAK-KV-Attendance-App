@@ -232,6 +232,7 @@ const HomeScreen = () => {
     return (
         <View className="bg-background h-full mb-8">
             {/* TODO: Fix wierd behaviours of the FlatList ;-; */}
+            {/* TODO: Add a Pagination like thingie with scroll down to load more and unload previous stuff */}
             <FlatList
                 data={filteredData}
                 initialNumToRender={15}
