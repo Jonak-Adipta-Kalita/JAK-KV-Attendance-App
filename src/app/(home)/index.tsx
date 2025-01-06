@@ -223,6 +223,14 @@ const HomeScreen = () => {
         );
     }, [searchString, classTeacherData.students]);
 
+    const loadBeforeData = useCallback(() => {
+        console.log("Loading before data");
+    }, []);
+
+    const loadAfterData = useCallback(() => {
+        console.log("Loading after data");
+    }, []);
+
     const renderItem = ({
         item: studentData,
     }: ListRenderItemInfo<StudentData>) => (
@@ -234,13 +242,17 @@ const HomeScreen = () => {
             {/* TODO: Fix wierd behaviours of the FlatList ;-; */}
             {/* TODO: Add a Pagination like thingie with scroll down to load more and unload previous stuff */}
             <FlatList
-                data={filteredData}
                 initialNumToRender={15}
+                data={filteredData}
                 keyExtractor={(item) => item.rollNo.toString()}
                 renderItem={renderItem}
-                contentContainerClassName="gap-y-5 bg-background flex flex-col items-center py-4 px-2"
+                onEndReachedThreshold={0.5}
+                onStartReachedThreshold={0.5}
+                onStartReached={loadBeforeData}
+                onEndReached={loadAfterData}
                 ListHeaderComponent={ListHeaderMemoized}
                 ListFooterComponent={ListFooterMemoized}
+                contentContainerClassName="gap-y-5 bg-background flex flex-col items-center py-4 px-2"
             />
         </View>
     );
