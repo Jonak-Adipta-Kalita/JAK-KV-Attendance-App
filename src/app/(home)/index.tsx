@@ -3,6 +3,7 @@ import cTData from "@/metadata.json";
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
+    Button,
     FlatList,
     ListRenderItemInfo,
     Text,
@@ -17,6 +18,7 @@ import { Attendance, ClassTeacherData, StudentData } from "@/@types/typings";
 import { useSearchStore, useTeacherStore } from "@/src/store";
 import { useRouter } from "expo-router";
 
+const STUDENT_CARD_LIMIT = 15;
 const classTeachersData = cTData;
 
 const AttendanceButton = ({
@@ -195,6 +197,7 @@ const HomeScreen = () => {
     const { user } = useUser();
     const searchString = useSearchStore((state) => state.search);
     const setTeacherData = useTeacherStore((state) => state.setTeacherData);
+    const [paginationScalar, setPaginationScalar] = useState(1);
 
     // TODO: Do this stuff globally so that we could do the SplashScreen stuff? But.... is it gonna become slow...?
     const classTeacherData: ClassTeacherData = useMemo(
@@ -215,20 +218,38 @@ const HomeScreen = () => {
         setTeacherData(classTeacherData);
     }, [classTeacherData, setTeacherData]);
 
-    const filteredData = useMemo(() => {
-        if (!searchString) return classTeacherData.students;
+    const [filteredData, setFilteredData] = useState(
+        classTeacherData.students.slice(0, STUDENT_CARD_LIMIT)
+    );
 
-        return classTeacherData.students.filter((student) =>
-            student.name.toLowerCase().includes(searchString.toLowerCase())
-        );
+    useEffect(() => {
+        const data = !searchString
+            ? classTeacherData.students.slice(0, STUDENT_CARD_LIMIT)
+            : classTeacherData.students.filter((student) =>
+                  student.name
+                      .toLowerCase()
+                      .includes(searchString.toLowerCase())
+              );
+
+        if (
+            filteredData.length !== data.length ||
+            !filteredData.every((s, i) => s.rollNo === data[i]?.rollNo)
+        ) {
+            setFilteredData(data);
+        }
     }, [searchString, classTeacherData.students]);
 
     const loadBeforeData = useCallback(() => {
-        console.log("Loading before data");
+        // console.log("Loading before data");
     }, []);
 
     const loadAfterData = useCallback(() => {
-        console.log("Loading after data");
+        // const data = classTeacherData.students.slice(
+        //     STUDENT_CARD_LIMIT * paginationScalar,
+        //     STUDENT_CARD_LIMIT * (paginationScalar + 1)
+        // );
+        // setFilteredData(data);
+        // setPaginationScalar(paginationScalar + 1);
     }, []);
 
     const renderItem = ({
