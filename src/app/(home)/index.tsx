@@ -197,7 +197,6 @@ const HomeScreen = () => {
     const { user } = useUser();
     const searchString = useSearchStore((state) => state.search);
     const setTeacherData = useTeacherStore((state) => state.setTeacherData);
-    const [paginationScalar, setPaginationScalar] = useState(1);
 
     // TODO: Do this stuff globally so that we could do the SplashScreen stuff? But.... is it gonna become slow...?
     const classTeacherData: ClassTeacherData = useMemo(
@@ -240,16 +239,11 @@ const HomeScreen = () => {
     }, [searchString, classTeacherData.students]);
 
     const loadBeforeData = useCallback(() => {
-        // console.log("Loading before data");
+        console.log("Loading before data");
     }, []);
 
     const loadAfterData = useCallback(() => {
-        // const data = classTeacherData.students.slice(
-        //     STUDENT_CARD_LIMIT * paginationScalar,
-        //     STUDENT_CARD_LIMIT * (paginationScalar + 1)
-        // );
-        // setFilteredData(data);
-        // setPaginationScalar(paginationScalar + 1);
+        console.log("Loading after data");
     }, []);
 
     const renderItem = ({
