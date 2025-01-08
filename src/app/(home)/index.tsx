@@ -18,7 +18,6 @@ import { Attendance, ClassTeacherData, StudentData } from "@/@types/typings";
 import { useSearchStore, useTeacherStore } from "@/src/store";
 import { useRouter } from "expo-router";
 
-const STUDENT_CARD_LIMIT = 15;
 const classTeachersData = cTData;
 
 const AttendanceButton = ({
@@ -199,6 +198,7 @@ const HomeScreen = () => {
     const setTeacherData = useTeacherStore((state) => state.setTeacherData);
 
     // TODO: Do this stuff globally so that we could do the SplashScreen stuff? But.... is it gonna become slow...?
+    // TODO: If there is data in zustand store, use that
     const classTeacherData: ClassTeacherData = useMemo(
         () =>
             classTeachersData.class_teachers
@@ -217,34 +217,13 @@ const HomeScreen = () => {
         setTeacherData(classTeacherData);
     }, [classTeacherData, setTeacherData]);
 
-    const [filteredData, setFilteredData] = useState(
-        classTeacherData.students.slice(0, STUDENT_CARD_LIMIT)
-    );
+    const filteredData = useMemo(() => {
+        if (!searchString) return classTeacherData.students;
 
-    useEffect(() => {
-        const data = !searchString
-            ? classTeacherData.students.slice(0, STUDENT_CARD_LIMIT)
-            : classTeacherData.students.filter((student) =>
-                  student.name
-                      .toLowerCase()
-                      .includes(searchString.toLowerCase())
-              );
-
-        if (
-            filteredData.length !== data.length ||
-            !filteredData.every((s, i) => s.rollNo === data[i]?.rollNo)
-        ) {
-            setFilteredData(data);
-        }
+        return classTeacherData.students.filter((student) =>
+            student.name.toLowerCase().includes(searchString.toLowerCase())
+        );
     }, [searchString, classTeacherData.students]);
-
-    const loadBeforeData = useCallback(() => {
-        console.log("Loading before data");
-    }, []);
-
-    const loadAfterData = useCallback(() => {
-        console.log("Loading after data");
-    }, []);
 
     const renderItem = ({
         item: studentData,
@@ -255,19 +234,17 @@ const HomeScreen = () => {
     return (
         <View className="bg-background h-full mb-8">
             {/* TODO: Fix wierd behaviours of the FlatList ;-; */}
-            {/* TODO: Add a Pagination like thingie with scroll down to load more and unload previous stuff */}
             <FlatList
-                initialNumToRender={15}
                 data={filteredData}
                 keyExtractor={(item) => item.rollNo.toString()}
                 renderItem={renderItem}
-                onEndReachedThreshold={0.5}
-                onStartReachedThreshold={0.5}
-                onStartReached={loadBeforeData}
-                onEndReached={loadAfterData}
                 ListHeaderComponent={ListHeaderMemoized}
                 ListFooterComponent={ListFooterMemoized}
                 contentContainerClassName="gap-y-5 bg-background flex flex-col items-center py-4 px-2"
+                removeClippedSubviews
+                initialNumToRender={10}
+                maxToRenderPerBatch={10}
+                windowSize={5}
             />
         </View>
     );
