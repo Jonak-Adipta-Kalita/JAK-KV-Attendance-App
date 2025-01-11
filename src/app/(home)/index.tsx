@@ -198,7 +198,6 @@ const HomeScreen = () => {
     const setTeacherData = useTeacherStore((state) => state.setTeacherData);
 
     // TODO: Do this stuff globally so that we could do the SplashScreen stuff? But.... is it gonna become slow...?
-    // TODO: If there is data in zustand store, use that
     const classTeacherData: ClassTeacherData = useMemo(
         () =>
             classTeachersData.class_teachers

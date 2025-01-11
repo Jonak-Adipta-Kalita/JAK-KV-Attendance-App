@@ -10,12 +10,16 @@ export const useTeacherStore = create<TeacherStore>((set, get) => ({
     },
     setTeacherData: (teacherData) => set({ teacher: teacherData }),
     updateStudentAttendance: (rollNo, attendance) =>
-        set((state) => {
-            state.teacher.students.find(
-                (student) => student.rollNo === rollNo
-            )!.attendance = attendance;
-            return state;
-        }),
+        set((state) => ({
+            teacher: {
+                ...state.teacher,
+                students: state.teacher.students.map((student) =>
+                    student.rollNo === rollNo
+                        ? { ...student, attendance: attendance }
+                        : student
+                ),
+            },
+        })),
     getStudent: (rollNo) =>
         get().teacher.students.find((student) => student.rollNo === rollNo)!,
     getStudents: () => get().teacher.students,
