@@ -243,7 +243,7 @@ const HomeScreen = () => {
                 removeClippedSubviews
                 initialNumToRender={10}
                 maxToRenderPerBatch={10}
-                windowSize={5}
+                windowSize={7}
             />
         </View>
     );
