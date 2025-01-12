@@ -48,7 +48,6 @@ if (!publishableKey) {
     );
 }
 
-// TODO: Is this the correct way to handle this?
 const ClerkLoadedComponent = () => {
     useEffect(() => {
         const asyncFunc = async () => {

@@ -232,7 +232,6 @@ const HomeScreen = () => {
 
     return (
         <View className="bg-background h-full mb-8">
-            {/* TODO: Fix wierd behaviours of the FlatList ;-; */}
             <FlatList
                 data={filteredData}
                 keyExtractor={(item) => item.rollNo.toString()}

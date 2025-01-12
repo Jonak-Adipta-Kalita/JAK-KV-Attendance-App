@@ -35,6 +35,10 @@ export default {
         },
         package: PROJECT_PACKAGE,
     },
+    web: {
+        bundler: "metro",
+        output: "server",
+    },
     plugins: ["expo-router", "expo-secure-store"],
     experiments: {
         typedRoutes: true,
