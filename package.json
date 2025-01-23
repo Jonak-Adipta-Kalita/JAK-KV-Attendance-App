@@ -1,59 +1,23 @@
 {
-    "name": "kv-attendance-app",
-    "main": "expo-router/entry",
-    "version": "1.0.0",
-    "scripts": {
-        "start": "expo start",
-        "android": "expo start --android",
-        "ios": "expo start --ios",
-        "lint": "expo lint"
-    },
-    "dependencies": {
-        "@clerk/clerk-expo": "^2.3.11",
-        "@expo/vector-icons": "^14.0.2",
-        "@react-navigation/native": "^7.0.0",
-        "expo": "~52.0.11",
-        "expo-auth-session": "~6.0.0",
-        "expo-dev-client": "~5.0.4",
-        "expo-linear-gradient": "~14.0.1",
-        "expo-linking": "~7.0.3",
-        "expo-router": "~4.0.9",
-        "expo-secure-store": "~14.0.0",
-        "expo-splash-screen": "~0.29.13",
-        "expo-status-bar": "~2.0.0",
-        "expo-web-browser": "~14.0.1",
-        "nativewind": "4.1.4",
-        "react": "18.3.1",
-        "react-compiler-runtime": "^19.0.0-beta-df7b47d-20241124",
-        "react-dom": "18.3.1",
-        "react-native": "0.76.3",
-        "react-native-gesture-handler": "~2.20.2",
-        "react-native-reanimated": "~3.16.1",
-        "react-native-safe-area-context": "4.12.0",
-        "react-native-screens": "~4.1.0",
-        "react-native-web": "~0.19.13",
-        "zustand": "^5.0.1"
-    },
-    "devDependencies": {
-        "@babel/core": "^7.25.2",
-        "@types/react": "~18.3.12",
-        "@typescript-eslint/eslint-plugin": "^8.16.0",
-        "@typescript-eslint/parser": "^8.16.0",
-        "babel-plugin-react-compiler": "^19.0.0-beta-df7b47d-20241124",
-        "dotenv": "^16.4.5",
-        "eslint": "^8.57.0",
-        "eslint-config-expo": "~8.0.1",
-        "eslint-config-prettier": "^9.1.0",
-        "eslint-plugin-expo": "^0.1.0",
-        "eslint-plugin-prettier": "^5.2.1",
-        "eslint-plugin-react": "^7.37.2",
-        "eslint-plugin-react-compiler": "^19.0.0-beta-df7b47d-20241124",
-        "eslint-plugin-react-hooks": "^5.0.0",
-        "eslint-plugin-react-native": "^4.1.0",
-        "prettier": "^3.4.1",
-        "tailwindcss": "^3.4.15",
-        "typescript": "~5.3.3"
-    },
-    "private": true,
-    "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+  "name": "@kv-attendance-app/base",
+  "private": true,
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5",
+    "turbo": "^2.3.3",
+    "typescript": "5.5.4"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "packageManager": "yarn@1.22.22",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
 }
