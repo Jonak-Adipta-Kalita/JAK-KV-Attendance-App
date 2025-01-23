@@ -19,61 +19,61 @@ cssInterop(SafeAreaView, { className: "style" });
 SplashScreen.preventAutoHideAsync();
 
 LogBox.ignoreLogs([
-    "Clerk has been loaded with development keys. Development instances have strict usage limits and should not be used when deploying your application to production",
+  "Clerk has been loaded with development keys. Development instances have strict usage limits and should not be used when deploying your application to production",
 ]);
 
 const tokenCache = {
-    async getToken(key: string) {
-        try {
-            return await SecureStore.getItemAsync(key);
-        } catch (_) {
-            await SecureStore.deleteItemAsync(key);
-            return null;
-        }
-    },
-    async saveToken(key: string, value: string) {
-        try {
-            return SecureStore.setItemAsync(key, value);
-        } catch (_) {
-            return;
-        }
-    },
+  async getToken(key: string) {
+    try {
+      return await SecureStore.getItemAsync(key);
+    } catch (_) {
+      await SecureStore.deleteItemAsync(key);
+      return null;
+    }
+  },
+  async saveToken(key: string, value: string) {
+    try {
+      return SecureStore.setItemAsync(key, value);
+    } catch (_) {
+      return;
+    }
+  },
 };
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 
 if (!publishableKey) {
-    throw new Error(
-        "Missing Publishable Key. Please set EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY in your .env"
-    );
+  throw new Error(
+    "Missing Publishable Key. Please set EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY in your .env",
+  );
 }
 
 const ClerkLoadedComponent = () => {
-    useEffect(() => {
-        const asyncFunc = async () => {
-            await SplashScreen.hideAsync();
-        };
-        asyncFunc();
-    }, []);
+  useEffect(() => {
+    const asyncFunc = async () => {
+      await SplashScreen.hideAsync();
+    };
+    asyncFunc();
+  }, []);
 
-    return (
-        <>
-            <Slot />
-            <StatusBar style="auto" animated translucent />
-        </>
-    );
+  return (
+    <>
+      <Slot />
+      <StatusBar style="auto" animated translucent />
+    </>
+  );
 };
 
 const RootLayout = () => {
-    return (
-        <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
-            <GestureHandlerRootView style={{ flex: 1 }}>
-                <ClerkLoaded>
-                    <ClerkLoadedComponent />
-                </ClerkLoaded>
-            </GestureHandlerRootView>
-        </ClerkProvider>
-    );
+  return (
+    <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <ClerkLoaded>
+          <ClerkLoadedComponent />
+        </ClerkLoaded>
+      </GestureHandlerRootView>
+    </ClerkProvider>
+  );
 };
 
 export default RootLayout;
