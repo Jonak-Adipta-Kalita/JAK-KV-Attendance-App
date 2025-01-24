@@ -10,6 +10,7 @@
 ### Auth Optimizing
 
 - SignIn wierd button opacity transition (due to new rn-animated version?)
+- Use AbortController to handle keyboard listeners
 - ✅ Logout Button acting very odd and wierd | Reason: Syncronized onPress
 - ✅ SignIn screen not showing when logging out automatically | Reason: Time lag for signing out
 
