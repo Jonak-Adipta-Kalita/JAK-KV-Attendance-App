@@ -17,9 +17,14 @@
 ### HomeScreen Optimizing
 
 - Probably use SQL instead of the metadata.json - expo-sqlite (check the expo-rn videos in my playlist) - host the db somewhere too
-- Slow buttons for selecting attendance state, coz of rerendering? or coz of the zustand store getting heavy? split the storage somehow?
+- ✅ Slow buttons for selecting attendance state, coz of rerendering? or coz of the zustand store getting heavy? split the storage somehow?
 - Slow searches? Taking a lot of time to render? Probably cache or memoize the components (header)?
 - ⌛ Optimize the Flatlist showing the student cards
+
+### TurboRepo Setup
+
+- ✅ Setup Monorepo with the base app working on itself solely
+- ⌛ Setup Packaged global configs [⌛ ESlint, TypeScript, Tailwind]
 
 ### General Optimizing - helps in the above sections
 
