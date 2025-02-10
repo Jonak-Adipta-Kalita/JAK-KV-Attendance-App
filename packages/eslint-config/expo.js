@@ -9,24 +9,24 @@ import { config as reactInternalConfig } from "./react-internal.js";
  * @type {import("eslint").Linter.Config}
  * */
 export const expoConfig = [
-    ...reactInternalConfig,
-    {
-        plugins: {
-            "react-native": pluginReactNative,
-        },
-        rules: {
-            ...pluginReactNative.configs.all.rules,
-            // ...pluginExpo.rules,
-            "react-native/no-color-literals": "off",
-            "react-native/no-inline-styles": "off",
-        },
+  ...reactInternalConfig,
+  {
+    plugins: {
+      "react-native": pluginReactNative,
     },
-    {
-        plugins: {
-            "react-compiler": pluginReactCompiler,
-            rules: {
-                "react-compiler/react-compiler": "error",
-            },
-        },
+    rules: {
+      ...pluginReactNative.configs.all.rules,
+      // ...pluginExpo.rules,
+      "react-native/no-color-literals": "off",
+      "react-native/no-inline-styles": "off",
     },
+  },
+  {
+    plugins: {
+      "react-compiler": pluginReactCompiler,
+      rules: {
+        "react-compiler/react-compiler": "error",
+      },
+    },
+  },
 ];

@@ -1,27 +1,27 @@
 {
-    "name": "@repo/eslint-config",
-    "version": "0.0.0",
-    "type": "module",
-    "private": true,
-    "exports": {
-        "./base": "./base.js",
-        "./react-internal": "./react-internal.js",
-        "./next-js": "./next.js",
-        "./expo": "./expo.js"
-    },
-    "devDependencies": {
-        "@eslint/js": "^9.19.0",
-        "@next/eslint-plugin-next": "^15.1.6",
-        "eslint": "^9.19.0",
-        "eslint-config-expo": "^8.0.1",
-        "eslint-config-prettier": "^10.0.1",
-        "eslint-plugin-react": "^7.37.4",
-        "eslint-plugin-react-compiler": "19.0.0-beta-714736e-20250131",
-        "eslint-plugin-react-hooks": "^5.1.0",
-        "eslint-plugin-react-native": "^5.0.0",
-        "eslint-plugin-turbo": "^2.3.4",
-        "globals": "^15.14.0",
-        "typescript": "^5.7.3",
-        "typescript-eslint": "^8.22.0"
-    }
+  "name": "@repo/eslint-config",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "exports": {
+    "./base": "./base.js",
+    "./react-internal": "./react-internal.js",
+    "./next-js": "./next.js",
+    "./expo": "./expo.js"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.19.0",
+    "@next/eslint-plugin-next": "^15.1.6",
+    "eslint": "^9.19.0",
+    "eslint-config-expo": "^8.0.1",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-react": "^7.37.4",
+    "eslint-plugin-react-compiler": "19.0.0-beta-714736e-20250131",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "eslint-plugin-react-native": "^5.0.0",
+    "eslint-plugin-turbo": "^2.3.4",
+    "globals": "^15.14.0",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.22.0"
+  }
 }

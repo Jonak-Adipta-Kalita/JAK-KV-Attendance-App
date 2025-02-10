@@ -7,14 +7,14 @@ import { config as reactInternalConfig } from "./react-internal.js";
  * @type {import("eslint").Linter.Config}
  * */
 export const nextJsConfig = [
-    ...reactInternalConfig,
-    {
-        plugins: {
-            "@next/next": pluginNext,
-        },
-        rules: {
-            ...pluginNext.configs.recommended.rules,
-            ...pluginNext.configs["core-web-vitals"].rules,
-        },
+  ...reactInternalConfig,
+  {
+    plugins: {
+      "@next/next": pluginNext,
     },
+    rules: {
+      ...pluginNext.configs.recommended.rules,
+      ...pluginNext.configs["core-web-vitals"].rules,
+    },
+  },
 ];

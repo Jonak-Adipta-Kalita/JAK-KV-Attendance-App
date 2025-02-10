@@ -8,29 +8,29 @@ import { config as baseConfig } from "./base.js";
  *
  * @type {import("eslint").Linter.Config} */
 export const config = [
-    ...baseConfig,
-    pluginReact.configs.flat.recommended,
-    {
-        languageOptions: {
-            ...pluginReact.configs.flat.recommended.languageOptions,
-            globals: {
-                ...globals.serviceworker,
-                ...globals.browser,
-            },
-        },
+  ...baseConfig,
+  pluginReact.configs.flat.recommended,
+  {
+    languageOptions: {
+      ...pluginReact.configs.flat.recommended.languageOptions,
+      globals: {
+        ...globals.serviceworker,
+        ...globals.browser,
+      },
     },
-    {
-        plugins: {
-            "react-hooks": pluginReactHooks,
-        },
-        settings: { react: { version: "detect" } },
-        rules: {
-            ...pluginReactHooks.configs.recommended.rules,
-            "react/react-in-jsx-scope": "off",
-            "react/jsx-props-no-spreading": "off",
-            "react/prop-types": "off",
-            "react/jsx-filename-extension": ["error", { extensions: [".tsx"] }],
-            "react-hooks/exhaustive-deps": "off",
-        },
+  },
+  {
+    plugins: {
+      "react-hooks": pluginReactHooks,
     },
+    settings: { react: { version: "detect" } },
+    rules: {
+      ...pluginReactHooks.configs.recommended.rules,
+      "react/react-in-jsx-scope": "off",
+      "react/jsx-props-no-spreading": "off",
+      "react/prop-types": "off",
+      "react/jsx-filename-extension": ["error", { extensions: [".tsx"] }],
+      "react-hooks/exhaustive-deps": "off",
+    },
+  },
 ];
