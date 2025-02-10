@@ -27,6 +27,9 @@ export const config = [
         rules: {
             ...pluginReactHooks.configs.recommended.rules,
             "react/react-in-jsx-scope": "off",
+            "react/jsx-props-no-spreading": "off",
+            "react/prop-types": "off",
+            "react/jsx-filename-extension": ["error", { extensions: [".tsx"] }],
             "react-hooks/exhaustive-deps": "off",
         },
     },
