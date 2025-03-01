@@ -32,6 +32,3 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
-
-# redundant
-metadata.json
