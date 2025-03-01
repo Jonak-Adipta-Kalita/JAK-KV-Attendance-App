@@ -1,6 +1,4 @@
 // TODO: Load the classTeachersData from a backend database instead of a json
-import cTData from "@/metadata.json";
-
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
     FlatList,
@@ -16,8 +14,8 @@ import { useUser, useAuth } from "@clerk/clerk-expo";
 import { Attendance, ClassTeacherData, StudentData } from "@/@types/typings";
 import { useSearchStore, useTeacherStore } from "@/src/store";
 import { useRouter } from "expo-router";
-
-const classTeachersData = cTData;
+import { useMutation } from "@tanstack/react-query";
+import { fetchStudents } from "@/src/lib/fetchStudents";
 
 const AttendanceButton = ({
     attendance,
@@ -191,27 +189,25 @@ const ListFooterMemoized = React.memo(ListFooter);
 
 const HomeScreen = () => {
     const { user } = useUser();
+    const classTeacherData = useTeacherStore((state) => state.teacher);
     const searchString = useSearchStore((state) => state.search);
     const setTeacherData = useTeacherStore((state) => state.setTeacherData);
 
+    const mutation = useMutation({
+        mutationFn: (userID: string) => fetchStudents(userID),
+        onSuccess: (data) => {
+            setTeacherData(data);
+        },
+        onError: (error) => {
+            console.error(error);
+        },
+    });
+
     // TODO: Do this stuff globally so that we could do the SplashScreen stuff? But.... is it gonna become slow...?
-    const classTeacherData: ClassTeacherData = useMemo(
-        () =>
-            classTeachersData.class_teachers
-                .map<ClassTeacherData>((teacher) => ({
-                    ...teacher,
-                    students: teacher.students.map((student) => ({
-                        ...student,
-                        attendance: "present",
-                    })),
-                }))
-                .find((teacher) => teacher.id === user!.id)!,
-        [user]
-    );
 
     useEffect(() => {
-        setTeacherData(classTeacherData);
-    }, [classTeacherData, setTeacherData]);
+        mutation.mutate(user!.id);
+    }, [setTeacherData]);
 
     const filteredData = useMemo(() => {
         if (!searchString) return classTeacherData.students;

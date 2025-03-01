@@ -2590,6 +2590,8 @@ __metadata:
     "@react-navigation/native": "npm:^7.0.0"
     "@repo/eslint-config": "npm:*"
     "@repo/tailwind-config": "npm:*"
+    "@tanstack/react-query": "npm:^5.66.11"
+    "@tanstack/react-query-devtools": "npm:^5.66.11"
     "@types/react": "npm:~18.3.12"
     babel-plugin-react-compiler: "npm:^19.0.0-beta-df7b47d-20241124"
     dotenv: "npm:^16.4.5"
@@ -3408,6 +3410,43 @@ __metadata:
   dependencies:
     tslib: "npm:^2.8.0"
   checksum: 10c0/33002f74f6f885f04c132960835fdfc474186983ea567606db62e86acd0680ca82f34647e8e610f4e1e422d1c16fce729dde22cd3b797ab1fd9061a825dabca4
+  languageName: node
+  linkType: hard
+
+"@tanstack/query-core@npm:5.66.11":
+  version: 5.66.11
+  resolution: "@tanstack/query-core@npm:5.66.11"
+  checksum: 10c0/0d8b6356fc282b11e731be9fecdcd0f9571b202bcacd079bf30274a3b951ff45c136b9892a1b93ae426782f7cb8d82f06028bbae0b1eb46a578318ab07ac081e
+  languageName: node
+  linkType: hard
+
+"@tanstack/query-devtools@npm:5.65.0":
+  version: 5.65.0
+  resolution: "@tanstack/query-devtools@npm:5.65.0"
+  checksum: 10c0/7d223e267d7d807d8d597edf08403dbd08e033079fe235e1a37e1449a9922a00cf68d4d1feeb2852f99e2efe386d0c3242856cb0568da0f574778a3187e67a38
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query-devtools@npm:^5.66.11":
+  version: 5.66.11
+  resolution: "@tanstack/react-query-devtools@npm:5.66.11"
+  dependencies:
+    "@tanstack/query-devtools": "npm:5.65.0"
+  peerDependencies:
+    "@tanstack/react-query": ^5.66.11
+    react: ^18 || ^19
+  checksum: 10c0/92f761bdd668ea5dc3c168e831f6cfdab89e8eb14e73173f20d65e40b8bb6ea7bb3d66aba0393ac89098ce4134c5caaff767fee4f91851154b6bd72ec913e879
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query@npm:^5.66.11":
+  version: 5.66.11
+  resolution: "@tanstack/react-query@npm:5.66.11"
+  dependencies:
+    "@tanstack/query-core": "npm:5.66.11"
+  peerDependencies:
+    react: ^18 || ^19
+  checksum: 10c0/8055abb73116eb93eef373f4766972088c86cfcb5355b4c724cdcbd499d0565d819e8e9e95288836948d87ccdc53e74f67f26da83cf454e7056939a4e35b4953
   languageName: node
   linkType: hard
 

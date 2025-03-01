@@ -12,6 +12,7 @@ import * as SplashScreen from "expo-splash-screen";
 import "react-native-reanimated";
 import "@/src/globals.css";
 import "expo-dev-client"; // Remove in Production?
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 cssInterop(SafeAreaView, { className: "style" });
 
@@ -21,6 +22,8 @@ SplashScreen.preventAutoHideAsync();
 LogBox.ignoreLogs([
     "Clerk has been loaded with development keys. Development instances have strict usage limits and should not be used when deploying your application to production",
 ]);
+
+const queryClient = new QueryClient();
 
 const tokenCache = {
     async getToken(key: string) {
@@ -67,11 +70,13 @@ const ClerkLoadedComponent = () => {
 const RootLayout = () => {
     return (
         <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
-            <GestureHandlerRootView style={{ flex: 1 }}>
-                <ClerkLoaded>
-                    <ClerkLoadedComponent />
-                </ClerkLoaded>
-            </GestureHandlerRootView>
+            <QueryClientProvider client={queryClient}>
+                <GestureHandlerRootView style={{ flex: 1 }}>
+                    <ClerkLoaded>
+                        <ClerkLoadedComponent />
+                    </ClerkLoaded>
+                </GestureHandlerRootView>
+            </QueryClientProvider>
         </ClerkProvider>
     );
 };
