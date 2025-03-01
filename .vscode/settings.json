@@ -1,3 +1,4 @@
 {
-  "prettier.requireConfig": false
+    "prettier.requireConfig": false,
+    "eslint.workingDirectories": [{ "mode": "auto" }]
 }

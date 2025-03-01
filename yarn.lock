@@ -2621,9 +2621,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@kv-attendance-app/rep@workspace:.":
+"@kv-attendance-app/repo@workspace:.":
   version: 0.0.0-use.local
-  resolution: "@kv-attendance-app/rep@workspace:."
+  resolution: "@kv-attendance-app/repo@workspace:."
   dependencies:
     prettier: "npm:^3.4.2"
     turbo: "npm:^2.4.0"
