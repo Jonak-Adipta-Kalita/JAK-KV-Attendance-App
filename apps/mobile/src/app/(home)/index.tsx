@@ -1,0 +1,244 @@
+// TODO: Load the classTeachersData from a backend database instead of a json
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import {
+    FlatList,
+    ListRenderItemInfo,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
+} from "react-native";
+import Feather from "@expo/vector-icons/Feather";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { useUser, useAuth } from "@clerk/clerk-expo";
+import { Attendance, ClassTeacherData, StudentData } from "@/@types/typings";
+import { useSearchStore, useTeacherStore } from "@/src/store";
+import { useRouter } from "expo-router";
+import { useMutation } from "@tanstack/react-query";
+import { fetchStudents } from "@/src/lib/fetchStudents";
+
+const AttendanceButton = ({
+    attendance,
+    isActive,
+    onPress,
+}: {
+    attendance: Attendance;
+    isActive: boolean;
+    onPress: (attendance: Attendance) => void;
+}) => {
+    const activeButtonStyle = (() => {
+        switch (attendance) {
+            case "present":
+                return "bg-green-500/20 border-green-500";
+            case "absent":
+                return "bg-red-500/20 border-red-500";
+            case "leave":
+                return "bg-yellow-500/20 border-yellow-500";
+        }
+    })();
+
+    return (
+        <TouchableOpacity
+            className={`flex flex-row p-4 items-center justify-center bg-zinc-700 rounded-lg border-[3px] ${
+                isActive ? activeButtonStyle : "border-secondary"
+            } ${["absent", "present"].includes(attendance) ? "flex-1" : "mt-5"}`}
+            onPress={() => onPress(attendance)}
+        >
+            <Ionicons
+                name={`${
+                    attendance === "present"
+                        ? "checkmark-circle"
+                        : attendance === "absent"
+                          ? "close-circle"
+                          : "time"
+                }`}
+                color={
+                    attendance === "present"
+                        ? `#4ade80`
+                        : attendance === "absent"
+                          ? `#f87171`
+                          : `#fbbf24`
+                }
+                size={24}
+            />
+            <Text className="ml-2 text-gray-300 font-bold tracking-wider text-base">
+                {attendance.charAt(0).toUpperCase() + attendance.slice(1)}
+            </Text>
+        </TouchableOpacity>
+    );
+};
+
+const AttendanceButtonMemoized = React.memo(AttendanceButton);
+
+const AttendanceButtons = ({ studentData }: { studentData: StudentData }) => {
+    const [attendance, setAttendance] = useState(studentData.attendance);
+    const updateStudentAttendance = useTeacherStore(
+        (state) => state.updateStudentAttendance
+    );
+
+    const onPress = useCallback((attendance: Attendance) => {
+        setAttendance(attendance);
+        updateStudentAttendance(studentData.rollNo, attendance);
+    }, []);
+
+    return (
+        <>
+            <View className="mt-5 flex flex-row gap-4 items-center">
+                <AttendanceButtonMemoized
+                    attendance="present"
+                    isActive={attendance === "present"}
+                    onPress={onPress}
+                />
+                <AttendanceButtonMemoized
+                    attendance="absent"
+                    isActive={attendance === "absent"}
+                    onPress={onPress}
+                />
+            </View>
+            <AttendanceButtonMemoized
+                attendance="leave"
+                isActive={attendance === "leave"}
+                onPress={onPress}
+            />
+        </>
+    );
+};
+
+const AttendanceButtonsMemoized = React.memo(AttendanceButtons);
+
+const Student = ({ studentData }: { studentData: StudentData }) => {
+    const maxLength = 24;
+
+    return (
+        <View className="box-style min-w-[95%] max-w-[95%] p-4">
+            <View className="flex flex-row justify-between">
+                <Text className="text-primary font-bold truncate tracking-wide">
+                    {studentData.name.slice(0, maxLength)}
+                    {studentData.name.length > maxLength ? "..." : ""}
+                </Text>
+                <Text className="text-gray-300/80 font-semibold">
+                    Roll No: {studentData.rollNo}
+                </Text>
+            </View>
+            <AttendanceButtonsMemoized studentData={studentData} />
+        </View>
+    );
+};
+
+const ListHeader = () => {
+    const { signOut } = useAuth();
+    const teacherData = useTeacherStore((state) => state.teacher);
+
+    const { search, setSearch } = useSearchStore();
+    const [localSearch, setLocalSearch] = useState(search);
+
+    return (
+        <View className="flex items-center min-w-[95%] max-w-[95%]">
+            <View className="flex items-center flex-row justify-between w-full mb-5">
+                <Text className="text-secondary tracking-widest font-bold text-xl mr-10 text-center">
+                    Standard: {teacherData.standard} ({teacherData.section})
+                </Text>
+                <TouchableOpacity
+                    onPress={async () => {
+                        await signOut();
+                        // TODO: Add a overlay translucent spinner untill the signout is complete
+                    }}
+                    className="bg-zinc-600 rounded-lg p-3"
+                >
+                    <Feather name="log-out" size={24} color="white" />
+                </TouchableOpacity>
+            </View>
+            <View className="flex items-center flex-row">
+                {/* TODO: let the button be pressed even when input/keyboard is active */}
+                <TextInput
+                    className="bg-zinc-600 p-4 text-primary font-semibold tracking-wider rounded-lg my-5 mr-5 flex-1"
+                    placeholder="Search Students..."
+                    placeholderTextColor={"#f5f5f5"}
+                    value={localSearch}
+                    onChangeText={setLocalSearch}
+                />
+                <TouchableOpacity
+                    onPress={() => setSearch(localSearch)}
+                    className="bg-zinc-600 rounded-full p-3"
+                >
+                    <Feather name="check-circle" size={30} color="white" />
+                </TouchableOpacity>
+            </View>
+        </View>
+    );
+};
+
+const ListFooter = () => {
+    const router = useRouter();
+
+    return (
+        <TouchableOpacity
+            className="bg-teal-700 p-4 rounded-lg my-5 w-[95%] flex items-center justify-center"
+            onPress={() => router.navigate("/(home)/confirm")}
+        >
+            <Text className="text-primary font-bold tracking-wider text-lg">
+                Confirm Attendance
+            </Text>
+        </TouchableOpacity>
+    );
+};
+
+const StudentMemoized = React.memo(Student);
+const ListHeaderMemoized = React.memo(ListHeader);
+const ListFooterMemoized = React.memo(ListFooter);
+
+const HomeScreen = () => {
+    const { user } = useUser();
+    const classTeacherData = useTeacherStore((state) => state.teacher);
+    const searchString = useSearchStore((state) => state.search);
+    const setTeacherData = useTeacherStore((state) => state.setTeacherData);
+
+    const mutation = useMutation({
+        mutationFn: (userID: string) => fetchStudents(userID),
+        onSuccess: (data) => {
+            setTeacherData(data);
+        },
+        onError: (error) => {
+            console.error(error);
+        },
+    });
+
+    // TODO: Do this stuff globally so that we could do the SplashScreen stuff? But.... is it gonna become slow...?
+
+    useEffect(() => {
+        mutation.mutate(user!.id);
+    }, [setTeacherData]);
+
+    const filteredData = useMemo(() => {
+        if (!searchString) return classTeacherData.students;
+
+        return classTeacherData.students.filter((student) =>
+            student.name.toLowerCase().includes(searchString.toLowerCase())
+        );
+    }, [searchString, classTeacherData.students]);
+
+    const renderItem = ({
+        item: studentData,
+    }: ListRenderItemInfo<StudentData>) => (
+        <StudentMemoized key={studentData.rollNo} studentData={studentData} />
+    );
+
+    return (
+        <View className="bg-background h-full mb-8">
+            <FlatList
+                data={filteredData}
+                keyExtractor={(item) => item.rollNo.toString()}
+                renderItem={renderItem}
+                ListHeaderComponent={ListHeaderMemoized}
+                ListFooterComponent={ListFooterMemoized}
+                contentContainerClassName="gap-y-5 bg-background flex flex-col items-center py-4 px-2"
+                removeClippedSubviews
+                initialNumToRender={10}
+                maxToRenderPerBatch={10}
+                windowSize={7}
+            />
+        </View>
+    );
+};
+
+export default HomeScreen;
